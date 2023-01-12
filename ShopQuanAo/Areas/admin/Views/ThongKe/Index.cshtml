@@ -95,7 +95,6 @@
 
 
 
-
 <div class="d-flex justify-content-between align-items-center mb-3" style="padding: 0 15px;">
     <h3 class="">Doanh thu tháng: (lấy dữ liệu tháng)</h3>
 
@@ -133,12 +132,12 @@
                         </thead>
                         <tbody>
                             @foreach (var item in ViewBag._dtThang)
-            {
+                            {
                                 <tr>
-                                    <td>Now</td>
+                                    <td>@String.Format("{0:d}", item.ngay)</td>
                                     <td>@item.id</td>
                                     <td>
-                                  @item.trangThai
+                                        @item.trangThai
                                     </td>
                                     <td>@String.Format("{0:0,0}", item.tienhang)<sup>đ</sup></td>
                                     <td>@String.Format("{0:0,0}", item.tienhang)<sup>đ</sup></td>
@@ -146,12 +145,27 @@
                                     <td>0<sup>đ</sup></td>
 
                                 </tr>
-            }
-                            
+                            }
+
+
                         </tbody>
                     </table>
                 </div>
-                
+                <div>
+                    @{ var total = 0;}
+                    @foreach (var i in ViewBag._dtThang)
+                    {
+                        if (i.tienhang != 0)
+                        {
+                            total += i.tienhang;
+
+                        }
+
+                    }
+                    <p class="text-center h1">Tổng tiền hàng : @String.Format("{0:0,0}", total)<sup>đ</sup></p>
+                </div>
+
+
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
@@ -161,7 +175,8 @@
             </div>
         </div>
     </div>
-    
+   
+
     @*<tr>
             <td colspan="12" class="align-items-center">
                 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
@@ -177,6 +192,11 @@
 
     @*</tbody>
         </table>*@
+
+
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </div>
 <!-- END DATA TABLE-->
 <div class="row">
@@ -185,3 +205,29 @@
         </div>
     </div>
 </div>
+<script>
+window.onload = function () {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	title: {
+        text: "Doanh thu theo ngày"
+	},
+	subtitles: [{
+		text: "Từ tháng 7/2021 đến bây giờ"
+	}],
+	axisY: {
+		title: "Tổng số tiền doanh thu",
+		gridThickness: 0
+	},
+	data: [{
+        type: "column",
+		indexLabel: "{y}",
+		dataPoints: @Html.Raw(ViewBag.DataPoints)
+	}]
+});
+chart.render();
+
+}
+</script>
+

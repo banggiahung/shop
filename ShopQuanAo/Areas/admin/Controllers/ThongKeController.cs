@@ -29,15 +29,49 @@ namespace ShopQuanAo.Areas.admin.Controllers
                               id = hoadon.MA_HD,
                               tienhang = (double)hoadon.TONG_TIEN,
                               trangThai = st.STATUS_ORDER,
-                              idTrangThai = st.ID
+                              idTrangThai = st.ID,
+                              ngay = (DateTime)hoadon.NGAY_MUA,
+                              
                           };
-            ViewBag._dtThang = dtThang.ToList();
+            var d  = dtThang.ToList();
+
+            int[] arr = new int[d.Count];
+            int i = 0;
+            d.ForEach(t => {
+                arr[i] = t.ngay.Month;
+                i++;
+            });
+            ViewBag._dtThang = d;
+            ViewBag.thang  = arr;
 
 
+            List<DataPoint> dataPoints = new List<DataPoint>();
+            foreach (var item in d)
+            {
+                dataPoints.Add(new DataPoint(String.Format("{0:d}", item.ngay), item.tienhang));
+            }
 
-
+            ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
             return View();
 
+        }
+        public List<HoaD> sortByMoth(List<HoaD> hoaDs, int i)
+        {
+            if (i == null)
+            {
+                i = 1;
+            }
+            //return hoaDs.Where(i=> i.ngay.Month == i);
+            var a =  from rs in hoaDs where rs.ngay.Month == i select new HoaD
+            {
+                id = rs.id,
+                tienhang = rs.tienhang,
+                trangThai = rs.trangThai,
+                idTrangThai = rs.idTrangThai,
+                ngay = rs.ngay,
+            };
+
+            return a.ToList();
         }
         public ActionResult DoanhThuNhanVien()
         {

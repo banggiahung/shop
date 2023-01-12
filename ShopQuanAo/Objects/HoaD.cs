@@ -11,7 +11,7 @@ namespace ShopQuanAo.Object
         public double tienhang { get; set; }
         public string trangThai { get; set; }
         public int idTrangThai { set; get; }
-
+        public DateTime ngay { get; set; }
 
     }
 }
