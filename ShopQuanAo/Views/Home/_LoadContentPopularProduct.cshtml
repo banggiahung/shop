@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Models.EntityFramework.SAN_PHAM>
+
+@foreach (var item in Model)
+{
+    <li class="prod-i">
+        <div class="prod-i-top">
+            <a href="product.html" class="prod-i-img"><!-- NO SPACE --><img src="@item.LINK_ANH_CHINH" alt="Aspernatur excepturi rem"><!-- NO SPACE --></a>
+            @*<p class="prod-i-info">
+                <a href="#" class="prod-i-favorites"><span>Wishlist</span><i class="fa fa-heart"></i></a>
+                <a href="#" class="prod-i-qview"><span>Quick View</span><i class="fa fa-search"></i></a>
+                <a class="prod-i-compare" href="#"><span>Compare</span><i class="fa fa-bar-chart"></i></a>
+            </p>*@
+        <p class="prod-i-addwrap">
+            <a class="prod-i-add" href="@Url.RouteUrl("RouteClient" , new { action = "SanPham" , id = item.SLUG })" >Chi Tiết</a>
+        </p>
+        </div>
+        <h3>
+            <a href="@Url.RouteUrl("RouteClient" , new { action = "SanPham" , id = item.SLUG })">@item.TEN_SP</a>
+        </h3>
+        <p class="prod-i-price">
+            <b>@String.Format("{0:0,0}", item.GIA_BAN) VNĐ</b>
+        </p>
+        @*<div class="prod-i-skuwrapcolor">
+            <ul class="prod-i-skucolor">
+                <li class="bx_active"><img src="img/color/red.jpg" alt="Red"></li>
+                <li><img src="img/color/blue.jpg" alt="Blue"></li>
+            </ul>
+        </div>*@
+    </li>
+}

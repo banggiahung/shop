@@ -1,0 +1,101 @@
+﻿
+@{
+    Layout = null;
+
+    var sessionCart = Session["CartSession"] as List<ShopQuanAo.Object.CartItem>;
+}
+<header class="header">
+
+   
+    <!-- Logo, Shop-menu - start -->
+    <div class="header-middle">
+        <div class="container header-middle-cont">
+            <div class="toplogo">
+                <a href="/">
+                    <img src="~/Public/frontEnd/img/logo_new.png" alt="đề tài 36">
+                </a>
+            </div>
+            <div class="shop-menu">
+                <ul>
+
+                    <li>
+                        <div class="h-cart">
+                            <a href="/giohang">
+                                <i class="fa fa-shopping-cart"></i>
+                                <span class="shop-menu-ttl">Cart</span>
+                                (
+                                @if (sessionCart != null)
+                                {
+                                    <b> @sessionCart.Sum(a => a.quantity) </b>
+                                }
+                                else
+                                {
+                                    <b>0</b>
+                                }
+                                )
+                            </a>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Logo, Shop-menu - end -->
+    <!-- Topmenu - start -->
+    <div class="header-bottom">
+        <div class="container">
+            <nav class="topmenu">
+
+                <!-- Catalog menu - start -->
+                <div class="topcatalog">
+                    <a class="topcatalog-btn" href="#"><span>All</span> Sản Phẩm </a>
+                    @Html.Action("LoadParentMenu","Home")
+                </div>
+                <!-- Catalog menu - end -->
+                <!-- Main menu - start -->
+                <button type="button" class="mainmenu-btn">Menu</button>
+
+                <ul class="mainmenu">
+                    <li>
+                        <a href="@Url.RouteUrl("RouteClient" , new { action = "Index"})" class="active">
+                            Trang Chủ
+                        </a>
+                    </li>
+                    
+
+                    @Html.Action("LoadMenuTop", "Home")
+
+                    <li>
+                        <a href="@Url.RouteUrl("RouteClient" , new { action = "BaiViet"})">
+                            Tin Tức
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/giohang">
+                            Giỏ Hàng
+                        </a>
+                    </li>
+
+                    <li class="mainmenu-more">
+                        <span>...</span>
+                        <ul class="mainmenu-sub"></ul>
+                    </li>
+                </ul>
+                <!-- Main menu - end -->
+                <!-- Search - start -->
+                <div class="topsearch">
+                    <a id="topsearch-btn" class="topsearch-btn" href="#"><i class="fa fa-search"></i></a>
+                    <form class="topsearch-form" action="@Url.RouteUrl("RouteClient" , new { action = "Search"})">
+                        <input type="text" placeholder="Search products" name="search">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
+                <!-- Search - end -->
+
+            </nav>
+        </div>
+    </div>
+    <!-- Topmenu - end -->
+
+</header>

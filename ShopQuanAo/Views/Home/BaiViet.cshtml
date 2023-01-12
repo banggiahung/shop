@@ -1,0 +1,62 @@
+﻿@model PagedList.IPagedList<Models.EntityFramework.BAI_VIET>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "BaiViet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="container">
+
+
+    <ul class="b-crumbs">
+        <li>
+            <a href="index.html">
+                Home
+            </a>
+        </li>
+        <li>
+            <span>Tin Tức</span>
+        </li>
+    </ul>
+    <h1 class="main-ttl main-ttl-categs"><span>Tin Tức</span></h1>
+    <!-- Blog Categories -->
+    @*<ul class="blog-categs">
+        <li class="active"><a href="blog.html">All</a></li>
+        <li><a href="blog.html">News</a></li>
+        <li><a href="blog.html">Reviews</a></li>
+        <li><a href="blog.html">Articles</a></li>
+    </ul>*@
+
+    <!-- Blog Posts - start -->
+    <div class="posts-list blog-page">
+        @foreach (var item in Model)
+        {
+            var str = (item.MO_TA.Length > 120) ? item.MO_TA.Substring(0, 120) : item.MO_TA;
+            <div class="cf-sm-6 cf-lg-4 col-xs-6 col-sm-6 col-md-4 posts2-i">
+                <a class="posts-i-img" href="@Url.Action("ChiTietBaiViet" , new { id = item.SLUG})"><span style="background: url(@item.IMAGES)"></span></a>
+                <time class="posts-i-date" datetime="@item.NGAY_DANG"><span>@item.NGAY_DANG.Value.Day</span> @item.NGAY_DANG.Value.DayOfWeek</time>
+                <h3 class="posts-i-ttl"><a href="@Url.Action("ChiTietBaiViet" , new { id = item.SLUG})">@item.TIEU_DE</a></h3>
+                <p>@str  </p>
+
+                <a href="@Url.Action("ChiTietBaiViet" , new { id = item.SLUG})" class="posts-i-more">Chi Tiết...</a>
+            </div>
+        }
+    </div>
+    <!-- Blog Posts - end -->
+    <!-- Pagination - start -->
+    @*<ul class="pagi">
+            <li class="active"><span>1</span></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li class="pagi-next"><a href="#"><i class="fa fa-angle-double-right"></i></a></li>
+        </ul>*@
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, search = @ViewBag.Search }), new PagedListRenderOptions
+          {
+              DisplayLinkToIndividualPages = true,
+              DisplayPageCountAndCurrentLocation = false,
+              MaximumPageNumbersToDisplay = 10,
+              LiElementClasses = new string[] { "page-item" }
+          })
+    <!-- Pagination - end -->
+</section>

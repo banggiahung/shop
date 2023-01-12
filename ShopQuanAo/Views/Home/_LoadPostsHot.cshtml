@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Models.EntityFramework.BAI_VIET>
+@{ 
+    var stt = 0;
+}
+@foreach (var item in Model)
+{
+    <div class="banner-i @( (stt == 0 || stt == 5 ) ? "style_11" : ( stt == 2 || stt == 3 ? "style_21" : "style_22" ))">
+        <span class="banner-i-bg" style="background: url(@item.IMAGES);"></span>
+        <div class="banner-i-cont">
+            
+            <h5 class="banner-i-ttl " style="color:white">@item.TIEU_DE</h5>
+            <p class="banner-i-link"><a href="@Url.RouteUrl("RouteClient",new { action = "ChiTietBaiViet" , id = item.SLUG })">View Cllection</a></p>
+        </div>
+    </div>
+    stt++;
+}

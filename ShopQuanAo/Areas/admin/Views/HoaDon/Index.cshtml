@@ -1,0 +1,309 @@
+﻿@model PagedList.IPagedList<Models.ADO.ModelBills>
+
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+}
+
+@section jsFooter{
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        $(".btn-view-details").off("click").on("click", function (e) {
+            e.preventDefault();
+            var id = $(this).data("id");
+            $("#Modal-" + id).modal();
+        });
+
+        
+        $(document).ready(function () {
+            $(".change-status-bill").off("click").on("click", function (event) {
+                event.preventDefault();
+                var id = $(this).data("id");
+
+                var status = $(this).data("status");
+
+                if (status == 3) {
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Xin lỗi hàng đã chốt đơn',
+                        toast: true,
+                    })
+                    return;
+                }
+              
+                Swal.fire({
+                    title: 'Success!',
+                    type: 'success',
+                    toast: true,
+                   
+                    showCloseButton: true,
+                    showCancelButton: true,
+                    showDenyButton:true,
+                    allowEscapeKey: true,
+                    allowOutsideClick: true,
+                  
+                    confirmButtonText: 'Giao hàng',
+                    confirmButtonAriaLabel: '2',
+                    confirmButtonColor :'green',
+
+                    denyButtonText: 'Hoàn thành',
+                    denyButtonAriaLabel: '3',
+                    denyButtonColor: "blue",
+
+                    cancelButtonText: 'Hủy đơn',
+                    cancelButtonAriaLabel: '4',
+                    cancelButtonColor:'red',
+                }).then((result) => {     
+                    var confirm;
+                    if (result.isConfirmed) {
+                        confirm = 2;
+                    } else if (result.isDenied) {
+                        confirm = 3
+                    } else {
+                        confirm = 4;
+                    }
+                    if (status != confirm) {
+                        $.ajax({
+                            url: '/admin/hoadon/changeStatus/' + id,
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                status: confirm
+                            },
+                            success: function (data) {
+                                location.href = "/admin/hoadon/";
+                            }
+                        })
+                    }
+                });
+            });
+        });
+
+
+    </script>
+}
+
+@section cssHeader{
+
+    <style>
+        ul.pagination {
+            justify-content: center;
+        }
+
+            ul.pagination li {
+                display: inline;
+                background: #e9ecef;
+            }
+
+                ul.pagination li.active {
+                    background: teal;
+                    color: white;
+                }
+
+                ul.pagination li a {
+                    color: black;
+                    float: left;
+                    padding: 8px 16px;
+                    text-decoration: none;
+                    font-size: 16px;
+                    transition: background-color .3s;
+                }
+
+                    ul.pagination li a.active {
+                        background: teal;
+                        color: white;
+                    }
+
+                    ul.pagination li a:hover:not(.active) {
+                        background-color: #ddd;
+                    }
+    </style>
+
+}
+
+
+
+<div class="d-flex pl-3 pr-3 justify-content-between align-items-center mb-3">
+    <h3 class="">Danh Sách Hóa Đơn</h3>
+
+
+</div>
+<div class="section__content section__content--p30">
+
+    <div class="container-fluid">
+        <div class="row m-t-3">
+            <div class="col-md-12">
+                <!-- DATA TABLE-->
+                @if (ViewBag.Success != null)
+                {
+                    <div class="alert alert-success">
+                        <strong>Success : !</strong>@ViewBag.Success
+                    </div>
+                }
+
+                <div class="table-responsive m-b-40" style=" position:relative;">
+                    <table class="table table-borderless table-data3 table-lsp">
+
+                        <thead>
+                            
+                            <tr>
+                                <th width="10%" class="text-center">ID</th>
+                                <th class="text-center">Tên Người Nhận</th>
+                                <th class="text-center">Số Điện Thoại</th>
+                                <th class="text-center">Địa Chỉ Nhận</th>
+                                <th class="text-center">Tổng Tiền</th>
+                                <th class="text-center">Ghi Chú</th>
+                                <th class="text-center">Status</th>
+                                <th width="5%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                            @foreach (var item in Model)
+                            {
+                                <tr id="row_@item.MA_HD">
+                                    <td align="center"> @Html.DisplayFor(modelItem => item.MA_HD)</td>
+                                    <td align="center"> @Html.DisplayFor(modelItem => item.TEN_NHAN_HANG)</td>
+                                    <td align="center"> @Html.DisplayFor(modelItem => item.SDT_NHAN)</td>
+                                    <td align="center"> @Html.DisplayFor(modelItem => item.DIA_CHI_NHAN)</td>
+                                    <td align="center"> @String.Format("{0:0,0}", item.TONG_TIEN)<sup>đ</sup></td>
+                                    <td align="center"> @Html.DisplayFor(modelItem => item.GHI_CHU)</td>
+                                    <td align="center" class="process">
+
+                                        <span data-id="@item.MA_HD"  data-status="@item.TRANG_THAI"  class="badge change-status-bill @((item.TRANG_THAI == 3)?"bg-success":((item.TRANG_THAI==4)?"bg-danger": ((item.TRANG_THAI==2)?"bg-warning":"bg-secondary")))">
+                                            @item.TenStatus
+                                        </span>
+
+                                    </td>
+                                    <td align="center">
+                                        <div class="table-data-feature">
+                                            <a class="item btn-view-details" data-id="@item.MA_HD" data-toggle="tooltip" data-placement="top" data-original-title="View">
+                                                <i class="zmdi zmdi-mail-send"></i>
+                                            </a>
+                                            
+
+                                            <div class="modal fade" id="Modal-@item.MA_HD">
+                                                <div class="modal-dialog modal-xl">
+                                                    <div class="modal-content">
+
+                                                        <!-- Modal Header -->
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title">Thông tin mã hóa đơn :  @item.MA_HD</h4>
+
+                                                            <button type="button" class="close" data-dismiss="modal">&times</button>
+                                                        </div>
+
+                                                        <!-- Modal body -->
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-12 col-sm-12 col-md-5 col-lg-4 text-left">
+                                                                    <h4 class="mb-1">Thông tin khách hàng</h4>
+
+
+                                                                    <div class="information-customer">
+                                                                        <p class="text-left"><span class="text-primary">Tên : </span> @item.TEN_NHAN_HANG</p>
+                                                                        <p><span class="text-primary">Số điện thoại nhận : </span> @item.SDT_NHAN</p>
+                                                                        <p><span class="text-primary">Địa chỉ nhận hàng : </span> @item.DIA_CHI_NHAN</p>
+                                                                        <p><span class="text-primary">Ghi chú : </span> @item.GHI_CHU</p>
+                                                                        <p><span class="text-primary">Ngày đặt : </span> @item.NGAY_MUA</p>
+                                                                        <p><span class="text-primary">Tổng tiền : </span> @String.Format("{0:0,0}", item.TONG_TIEN)<sup>đ</sup></p>
+                                                                        <p>
+
+                                                                            <span class="text-primary">Trạng thái : </span>
+                                                                            <span data-id="@item.MA_HD" class="badge @((item.TRANG_THAI == 3)?"bg-success":((item.TRANG_THAI==4)?"bg-danger": ((item.TRANG_THAI==2)?"bg-warning":"bg-secondary")))">
+                                                                                @item.TenStatus
+                                                                            </span>
+
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-12 col-sm-12 col-md-7 col-lg-8">
+                                                                    <h4 class="mb-1">Thông tin sản phẩm mua</h4>
+                                                                    <table class="table table-borderless table-data3 table-lsp">
+
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>ID</th>
+                                                                                <th class="text-center">Tên sản phẩm</th>
+                                                                                <th class="text-center">Màu</th>
+                                                                                <th class="text-center">Size</th>
+                                                                                <th class="text-center">Số lượng</th>
+                                                                                <th class="text-center">Giá bán</th>
+                                                                                <th class="text-center">Tổng tiền</th>
+
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            @if (item.listDetalisBill.Count > 0)
+                                                                            {
+                                                                                foreach (var details in item.listDetalisBill)
+                                                                                {
+                                                                                    <tr>
+                                                                                        <td>@details.ID</td>
+                                                                                        <td>@details.tenSP</td>
+                                                                                        <td>@details.tenColor</td>
+                                                                                        <td>@details.tenSize</td>
+                                                                                        <td>@details.SL_MUA</td>
+                                                                                        <td>@String.Format("{0:0,0}", details.GIA_BAN)<sup>đ</sup></td>
+                                                                                        <td>@String.Format("{0:0,0}", details.GIA_BAN * details.SL_MUA)<sup>đ</sup></td>
+                                                                                    </tr>
+                                                                                }
+
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Modal footer -->
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+
+
+
+                            <tr>
+                                <td colspan="8" class="align-items-center">
+                                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page , search = @ViewBag.Search}), new PagedListRenderOptions
+                                    {
+                                       DisplayLinkToIndividualPages = true,
+                                       DisplayPageCountAndCurrentLocation = false,
+                                       MaximumPageNumbersToDisplay = 10,
+                                       LiElementClasses = new string[] { "page-item" }
+                                    })
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- END DATA TABLE-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="copyright">
+                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

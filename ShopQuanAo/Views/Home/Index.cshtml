@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ 
+    var ListSlides = @ViewBag.ListSlide;
+    var ListArticle = @ViewBag.ListArticleHot;
+    var ProductHot = @ViewBag.ProductHot;
+}
+
+<section class="container">
+
+
+    <!-- Slider -->
+    <div class="fr-slider-wrap">
+        <div class="fr-slider">
+            <ul class="slides">
+
+                @if (ListSlides != null)
+                {
+                    foreach (var item in ListSlides)
+                    {
+                        <li>
+                            <img src="@item.IMAGES" style="width:100%;" alt="@item.NGAY_DANG">
+                            @*<div class="fr-slider-cont">
+                                <h3>@item.TIEU_DE</h3>
+
+                                <p class="fr-slider-more-wrap">
+                                    <a class="fr-slider-more" href="@item.LINK">View collection</a>
+                                </p>
+                            </div>*@
+                        </li>
+                    }
+
+                }
+
+            </ul>
+        </div>
+    </div>
+
+
+    <!-- Popular Products -->
+    @Html.Action("LoadPopularProducts", "Home")
+    <!-- .fr-pop-wrap -->
+    <!-- Banners -->
+    <div class="banners-wrap">
+        <div class="banners-list">
+            @Html.Action("LoadPostsHot", "Home")
+
+           
+        </div>
+    </div>
+
+
+    <!-- Special offer -->
+    <div class="discounts-wrap">
+        <h3 class="component-ttl"><span>Sản phẩm mới nhất</span></h3>
+        <div class="flexslider discounts-list">
+            <ul class="slides">
+                @Html.Action("LoadProductNew", "Home")
+
+            </ul>
+        </div>
+        
+    </div>
+
+    <div class="discounts-wrap">
+        <h3 class="component-ttl"><span>Sản phẩm nổi bật</span></h3>
+        <div class="flexslider discounts-list">
+            <ul class="slides">
+                @foreach (var item in ProductHot)
+                {
+                    <li class="discounts-i">
+                        <a href="product.html" class="discounts-i-img">
+                            <img src="@item.LINK_ANH_CHINH" alt="@item.TEN_SP">
+                        </a>
+                        <h3 class="discounts-i-ttl">
+                           @* Html.RouteLink(item.TEN_SP, new { action = "SanPham", id = item.SLUG })*@
+                             <a href="@Url.RouteUrl("RouteClient",new { action = "SanPham" , id = item.SLUG })">@item.TEN_SP</a>
+                            @* <a href="@Url.Action("SanPham" , "Home" , new { id = item.SLUG})">@item.TEN_SP</a>*@
+                        </h3>
+                        <p class="discounts-i-price">
+                            <b>@String.Format("{0:0,0}", item.GIA_BAN  - (item.GIA_BAN * item.GIAM_GIA)/100)</b> VND
+                        </p>
+                    </li>
+                }
+
+            </ul>
+        </div>
+        
+    </div>
+
+    <!-- Latest news -->
+    <div class="posts-wrap">
+        <h3 class="component-ttl"><span>Tin tức mới nhất</span></h3>
+        <div class="posts-list">
+            @foreach (var item in ListArticle)
+            {
+                <div class="posts-i">
+                    <a class="posts-i-img" href="@Url.RouteUrl("RouteClient",new { action = "ChiTietBaiViet" , id = item.SLUG })">
+                        <span style="background: url(@item.IMAGES)"></span>
+                    </a>
+                    <time class="posts-i-date" datetime="2016-11-09 00:00:00"><span>30</span> Jan</time>
+                    <div class="posts-i-info">
+                        <a href="@Url.RouteUrl("RouteClient",new { action = "ChiTietBaiViet" , id = item.SLUG })" class="posts-i-ctg">@item.TIEU_DE</a>
+                        @*<h3 class="posts-i-ttl">
+                        <a href="post.html">Animi quaerat at</a>
+                    </h3>*@
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+
+
+   
+    
+</section>
+

@@ -1,0 +1,302 @@
+﻿@model PagedList.IPagedList<Models.EntityFramework.SAN_PHAM>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="container">
+    <ul class="b-crumbs">
+        <li>
+            <a href="index.html">
+                Home
+            </a>
+        </li>
+
+        <li>
+            <span>Search</span>
+        </li>
+    </ul>
+    <h1 class="main-ttl"><span>Kết Quả Tìm Kiếm</span></h1>
+    <!-- Catalog Sidebar - start -->
+    <div class="section-sb">
+        <!-- Filter - start -->
+        <div class="section-filter">
+            <button id="section-filter-toggle" class="section-filter-toggle" data-close="Hide Filter" data-open="Show Filter">
+                <span>Show Filter</span> <i class="fa fa-angle-down"></i>
+            </button>
+            <div class="section-filter-cont">
+
+                <form method="get">
+                    <div class="section-filter-item opened">
+                        <p class="section-filter-ttl">Tìm Kiếm Theo Giá <i class="fa fa-angle-down"></i></p>
+                        <div class="section-filter-fields">
+                            <p class="section-filter-field">
+                                <input id="section-filter-checkbox2-0" name="price" value="all" type="radio" checked>
+                                <label class="section-filter-checkbox" for="section-filter-checkbox2-0">Tất Cả</label>
+                            </p>
+                            <p class="section-filter-field">
+                                <input id="section-filter-checkbox2-1" name="price" value="0-2000000" type="radio">
+                                <label class="section-filter-checkbox" for="section-filter-checkbox2-1">0 => 2.000.000 Đ</label>
+                            </p>
+                            <p class="section-filter-field">
+                                <input id="section-filter-checkbox2-2" name="price" value="2000000-5000000" type="radio">
+                                <label class="section-filter-checkbox" for="section-filter-checkbox2-2">2.000.000 Đ => 5.000.000 Đ</label>
+                            </p>
+                            <p class="section-filter-field">
+                                <input id="section-filter-checkbox2-3" name="price" value="5000000-10000000" type="radio">
+                                <label class="section-filter-checkbox" for="section-filter-checkbox2-3">5.000.000 Đ => 10.000.000 Đ</label>
+                            </p>
+                            <p class="section-filter-field">
+                                <input id="section-filter-checkbox2-4" name="price" value="10000000-25000000" type="radio">
+                                <label class="section-filter-checkbox" for="section-filter-checkbox2-4">10.000.000 Đ => 25.000.000 Đ</label>
+                            </p>
+                            <p class="section-filter-field">
+                                <input id="section-filter-checkbox2-5" name="price" value="25000000-5000000" type="radio">
+                                <label class="section-filter-checkbox" for="section-filter-checkbox2-5">25.000.000 Đ => 50.000.000 Đ</label>
+                            </p>
+                            <p class="section-filter-field">
+                                <input id="section-filter-checkbox2-6" name="price" value="5000000" type="radio">
+                                <label class="section-filter-checkbox" for="section-filter-checkbox2-6">Trên 50.000.000 Đ</label>
+                            </p>
+                            <input type="hidden" name="search" value="@ViewBag.Search" />
+                        </div>
+                    </div>
+                    <div class="section-filter-buttons">
+                        <input class="btn btn-themes" id="set_filter" type="submit" value="Tìm Kiếm">
+                        <input class="btn btn-link" id="del_filter" name="del_filter" value="Reset" type="reset">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Filter - end -->
+
+    </div>
+    <!-- Catalog Sidebar - end -->
+    <!-- Catalog Items | Gallery V1 - start -->
+    <div class="section-cont">
+
+        <!-- Catalog Topbar - start -->
+        <div class="section-top">
+
+            <!-- View Mode -->
+            <ul class="section-mode">
+                <li class="section-mode-gallery active"><a title="View mode: Gallery" href="catalog-gallery.html"></a></li>
+            </ul>
+
+            <!-- Sorting -->
+            <!-- Count per page -->
+
+
+        </div>
+        <!-- Catalog Topbar - end -->
+        <div class="prod-items section-items">
+
+            @foreach (var item in Model)
+            {
+                <div class="prod-i">
+                    <div class="prod-i-top">
+                        <a href="@Url.Action("SanPham" , new { id = item.SLUG})" class="prod-i-img"><!-- NO SPACE --><img src="@item.LINK_ANH_CHINH" alt="Adipisci aperiam commodi"><!-- NO SPACE --></a>
+                    </div>
+                    <h3>
+                        <a href="@Url.Action("SanPham" , new { id = item.SLUG})">@item.TEN_SP</a>
+                    </h3>
+                    <p class="prod-i-price">
+                        <b>@String.Format("{0:0,0}", item.GIA_BAN)<sup>đ</sup></b>
+                    </p>
+
+                </div>
+            }
+
+
+
+        </div>
+
+        <!-- Pagination - start -->
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, price = @ViewBag.SearchPrice , search = @ViewBag.Search }), new PagedListRenderOptions
+   {
+       DisplayLinkToIndividualPages = true,
+       DisplayPageCountAndCurrentLocation = false,
+       MaximumPageNumbersToDisplay = 10,
+       LiElementClasses = new string[] { "page-item" }
+   })
+        @*  <ul class="pagi">
+                <li class="active"><span>1</span></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li class="pagi-next"><a href="#"><i class="fa fa-angle-double-right"></i></a></li>
+            </ul>*@
+        <!-- Pagination - end -->
+    </div>
+    <!-- Catalog Items | Gallery V1 - end -->
+    <!-- Quick View Product - start -->
+    <div class="qview-modal">
+        <div class="prod-wrap">
+            <a href="product.html">
+                <h1 class="main-ttl">
+                    <span>Reprehenderit adipisci</span>
+                </h1>
+            </a>
+            <div class="prod-slider-wrap">
+                <div class="prod-slider">
+                    <ul class="prod-slider-car">
+                        <li>
+                            <a data-fancybox-group="popup-product" class="fancy-img" href="http://placehold.it/500x525">
+                                <img src="http://placehold.it/500x525" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a data-fancybox-group="popup-product" class="fancy-img" href="http://placehold.it/500x591">
+                                <img src="http://placehold.it/500x591" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a data-fancybox-group="popup-product" class="fancy-img" href="http://placehold.it/500x525">
+                                <img src="http://placehold.it/500x525" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a data-fancybox-group="popup-product" class="fancy-img" href="http://placehold.it/500x722">
+                                <img src="http://placehold.it/500x722" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a data-fancybox-group="popup-product" class="fancy-img" href="http://placehold.it/500x722">
+                                <img src="http://placehold.it/500x722" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a data-fancybox-group="popup-product" class="fancy-img" href="http://placehold.it/500x722">
+                                <img src="http://placehold.it/500x722" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a data-fancybox-group="popup-product" class="fancy-img" href="http://placehold.it/500x722">
+                                <img src="http://placehold.it/500x722" alt="">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="prod-thumbs">
+                    <ul class="prod-thumbs-car">
+                        <li>
+                            <a data-slide-index="0" href="#">
+                                <img src="http://placehold.it/500x525" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a data-slide-index="1" href="#">
+                                <img src="http://placehold.it/500x591" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a data-slide-index="2" href="#">
+                                <img src="http://placehold.it/500x525" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a data-slide-index="3" href="#">
+                                <img src="http://placehold.it/500x722" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a data-slide-index="4" href="#">
+                                <img src="http://placehold.it/500x722" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a data-slide-index="5" href="#">
+                                <img src="http://placehold.it/500x722" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a data-slide-index="6" href="#">
+                                <img src="http://placehold.it/500x722" alt="">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="prod-cont">
+                <p class="prod-actions">
+                    <a href="#" class="prod-favorites"><i class="fa fa-heart"></i> Add to Wishlist</a>
+                    <a href="#" class="prod-compare"><i class="fa fa-bar-chart"></i> Compare</a>
+                </p>
+                <div class="prod-skuwrap">
+                    <p class="prod-skuttl">Color</p>
+                    <ul class="prod-skucolor">
+                        <li class="active">
+                            <img src="img/color/blue.jpg" alt="">
+                        </li>
+                        <li>
+                            <img src="img/color/red.jpg" alt="">
+                        </li>
+                        <li>
+                            <img src="img/color/green.jpg" alt="">
+                        </li>
+                        <li>
+                            <img src="img/color/yellow.jpg" alt="">
+                        </li>
+                        <li>
+                            <img src="img/color/purple.jpg" alt="">
+                        </li>
+                    </ul>
+                    <p class="prod-skuttl">Sizes</p>
+                    <div class="offer-props-select">
+                        <p>XL</p>
+                        <ul>
+                            <li><a href="#">XS</a></li>
+                            <li><a href="#">S</a></li>
+                            <li><a href="#">M</a></li>
+                            <li class="active"><a href="#">XL</a></li>
+                            <li><a href="#">L</a></li>
+                            <li><a href="#">4XL</a></li>
+                            <li><a href="#">XXL</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="prod-info">
+                    <p class="prod-price">
+                        <b class="item_current_price">$238</b>
+                    </p>
+                    <p class="prod-qnt">
+                        <input type="text" value="1">
+                        <a href="#" class="prod-plus"><i class="fa fa-angle-up"></i></a>
+                        <a href="#" class="prod-minus"><i class="fa fa-angle-down"></i></a>
+                    </p>
+                    <p class="prod-addwrap">
+                        <a href="#" class="prod-add">Add to cart</a>
+                    </p>
+                </div>
+                <ul class="prod-i-props">
+                    <li>
+                        <b>SKU</b> 05464207
+                    </li>
+                    <li>
+                        <b>Manufacturer</b> Mayoral
+                    </li>
+                    <li>
+                        <b>Material</b> Cotton
+                    </li>
+                    <li>
+                        <b>Pattern Type</b> Print
+                    </li>
+                    <li>
+                        <b>Wash</b> Colored
+                    </li>
+                    <li>
+                        <b>Style</b> Cute
+                    </li>
+                    <li>
+                        <b>Color</b> Blue, Red
+                    </li>
+                    <li><a href="#" class="prod-showprops">All Features</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Quick View Product - end -->
+</section>
+

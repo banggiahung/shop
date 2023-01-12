@@ -1,0 +1,296 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+}
+
+
+@section jsFooter{
+
+    <script src="~/Public/Plugins/ckeditor/ckeditor.js"></script>
+    <script src="~/Public/admin/js/SanPham.js"></script>
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace("mo-ta-chi-tiet");
+           
+        })
+    </script>
+}
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <form>
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Basic Form</strong> Elements
+                            </div>
+                            <div class="card-body card-block">
+                                <div class="row form-group mt-3">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Mã Sản Phẩm : </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input type="text" id="ma-san-pham" name="ma-san-pham" placeholder="Mã .  .  .  .  .  ." class="form-control">
+                                        <small class="validate validate-masp text-danger form-text "></small>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group mt-3">
+                                    <div class="col col-md-3">
+                                        <label for="select" name="loai-san-pham" id="loai-san-pham" class=" form-control-label">Loại Sản Phẩm : </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        @Html.DropDownList("loai-san-pham", new SelectList(ViewBag.MovieType, "Value", "Text"), "----------Chọn Loại ---------------", new { @id = "loai-san-pham", @class = "form-control-sm form-control loai-san-pham" })
+
+                                        <small class="validate validate-lsp text-danger form-text "></small>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group mt-3">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Tên Sản Phẩm : </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input type="text" id="ten-san-pham" name="ten-san-pham" placeholder="Text" class="form-control">
+                                        <small class="validate validate-ten-sp text-danger form-text "></small>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group mt-3">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Slug :</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input type="text" id="slug" name="slug" placeholder="Text" class="form-control" readonly>
+                                        <small class="validate validate-slug text-danger form-text "></small>
+                                    </div>
+                                </div>
+                                <div class="row form-group mt-3">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Đơn Vị Tính : </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input type="text" id="don-vi-tinh" name="don-vi-tinh" placeholder="Text" class="form-control">
+                                        <small class="validate validate-don-vi-tinh text-danger form-text "></small>
+                                    </div>
+                                </div>
+                                <div class="row form-group mt-3">
+                                    <div class="col col-md-3">
+                                        <label for="gia-nhap" class=" form-control-label">Giá Nhập : </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input type="number" id="gia-nhap" name="gia-nhap" placeholder="Text" class="form-control">
+                                        <small class="validate validate-gia-nhap text-danger form-text "></small>
+                                    </div>
+                                </div>
+                                <div class="row form-group mt-3">
+                                    <div class="col col-md-3">
+                                        <label for="gia-ban" class=" form-control-label">Giá Bán : </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input type="number" id="gia-ban" name="gia-ban" placeholder="Text" class="form-control">
+                                        <small class="validate validate-gia-ban text-danger form-text "></small>
+                                    </div>
+                                </div>
+                                <div class="row form-group mt-3">
+                                    <div class="col col-md-3">
+                                        <label for="giam-gia" class=" form-control-label">Giảm Giá : </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input type="number" min="0" value="0" max="100" id="giam-gia" name="giam-gia" placeholder="Text" class="form-control">
+                                        <small class="validate validate-giam-gia text-danger form-text "></small>
+                                    </div>
+                                </div>
+                                <div class="row form-group mt-3">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Ảnh Chính</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <div class="form-group mt-3">
+                                            <input type="file" name="product-images" id="product-images" class="file-upload-default-image" style="position: absolute ; visibility: hidden;">
+                                            <div class="input-group col-xs-12">
+                                                <input type="text" class="form-control file-upload-info" disabled="" placeholder="Upload Image">
+
+                                                <span class="input-group-append">
+                                                    <button class="file-upload-image btn btn-primary" type="button">Upload</button>
+                                                </span>
+                                            </div>
+                                            <small class="validate validate-images text-danger form-text "></small>
+                                            <div class="hien-thi-image-chinh" style="min-width: 200px; max-width:300px ; margin: 1rem auto;">
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-12">
+
+                                    </div>
+                                </div>
+                                <div class="row form-group mt-3">
+                                    <div class="col col-md-3">
+                                        <label for="email-input" class=" form-control-label">Ảnh Kèm Theo</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <div class="form-group mt-3">
+                                            <input type="file" name="product-list-images" id="product-list-img" class="file-upload-default-list-img" style="position: absolute ; visibility: hidden;" multiple="multiple">
+                                            <div class="input-group col-xs-12">
+                                                <input type="text" class="form-control file-upload-info" disabled="" placeholder="Upload Image">
+                                                <span class="input-group-append">
+                                                    <button class="file-upload-list-image btn btn-primary" type="button">Upload</button>
+                                                </span>
+                                            </div>
+                                            <small class="validate validate-list-images text-danger form-text "></small>
+                                            <div id="hien-thi-image-kem-theo" class="row mt-3">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+
+                                    </div>
+                                </div>
+                                <div class="row form-group mt-3">
+                                    <div class="col col-md-3">
+                                        <label for="mo-ta" class=" form-control-label">Mô Tả : </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <textarea name="mo-ta" id="mo-ta" rows="4" placeholder="Content..." class="form-control"></textarea>
+                                        <small class="validate validate-mo-ta text-danger form-text "></small>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row form-group mt-3">
+                                    <div class="col col-md-3">
+                                        <label for="mo-ta-chi-tiet" class=" form-control-label">Mô Tả Chi Tiết</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <textarea name="mo-ta-chi-tiet" id="mo-ta-chi-tiet" rows="9" placeholder="Content..." class="mo-ta-chi-tiet form-control"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group mt-3">
+                                    <div class="col col-md-3">
+                                        <label for="mo-ta" class=" form-control-label">Nổi Bật : </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input type="checkbox" name="noibat" id="noibat" value="true" />
+                                    </div>
+                                </div>
+                                <div class="row form-group mt-3">
+                                    <div class="col col-md-3">
+                                        <label for="mo-ta" class=" form-control-label">Hiển Thị : </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input type="checkbox" name="hienthi" id="hienthi" value="true" />
+                                    </div>
+                                </div>
+
+                                <table class="table table-color">
+                                    <h4 class="w-100 text-center mb-2 mt-3 pt-3 text-primary"><ins>Thông tin chi tiết : Màu / Size</ins></h4>
+                                    <thead>
+                                        <tr>
+                                            <th width="5%">Action</th>
+                                            <th scope="col" width="20%">Tên Màu</th>
+                                            <th scope="col" width="10%">Mã Màu</th>
+                                            <th scope="col" width="15%">Hình Ảnh</th>
+                                            <th scope="col" width="50%">Size / Số lượng</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody class="tbody-details-san-pham">
+                                        <tr>
+                                            <td>
+                                                <span class="btn fa fa-times-circle delete-row-color" style="font-size:20px ; color:red;"></span>
+                                            </td>
+                                            <td>
+                                                <input type="text" id="ten-mau" name="ten-mau" placeholder="Tên màu ....." class="ten-mau form-control-sm form-control">
+                                            </td>
+                                            <td>
+                                                <input id="ma-mau" name="ma-mau" type="color" class="form-control-sm" value="#ff0000" />
+                                            </td>
+                                            <td>
+                                                <div class="upload-image-details">
+                                                    <div class="wrapper">
+                                                        <div class="image">
+                                                            <img src="" alt="Chọn File">
+                                                        </div>
+                                                        <div class="content">
+                                                            <div class="icon">
+                                                                <i class="fas fa-cloud-upload-alt"></i>
+                                                            </div>
+                                                            <div class="text">No file chosen, yet!</div>
+                                                        </div>
+                                                        <div class="cancel-btn">
+                                                            <i class="fas fa-times"></i>
+                                                        </div>
+                                                        <div class="file-name">File name here</div>
+                                                    </div>
+                                                    <button class="custom-btn">Choose a file</button>
+                                                    <input type="file" name="anh-mau" hidden="hidden" class="anh-mau default-btn">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="size-and-quantity">
+                                                    <div class="row form-group align-items-center mb-2">
+                                                        <div class="col-5">
+
+                                                            @Html.DropDownList("size", ViewBag.ListSize as SelectList, new { @class = "size form-control-sm form-control" })
+
+                                                        </div>
+                                                        <div class="col-5">
+                                                            <input type="number" id="input-small" name="input-small" placeholder="Số Lượng" class="input-sm  quantity form-control-sm form-control">
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <span class="btn-remove-row-size-quantity fas fa-times-circle text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <span class="btn-add-row-size-quantity fa fa-plus-circle text-primary"></span>
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="8">
+                                                <span class="btn-add-row-details-product fa fa-plus-square" style="font-size:25px; color:forestgreen"></span>
+                                            </td>
+
+                                        </tr>
+
+                                    </tfoot>
+                                </table>
+
+
+                            </div>
+                            <div class="card-footer">
+                                <div>
+                                    <small class="validate validate-table-insert text-danger form-text "></small>
+                                </div>
+                                <button type="button" class="btn-submit-product btn btn-primary btn-sm">
+                                    <i class="fa fa-dot-circle-o"></i> Submit
+                                </button>
+                                <button type="reset" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-ban"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+

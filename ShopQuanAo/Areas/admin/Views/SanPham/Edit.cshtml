@@ -1,0 +1,473 @@
+﻿@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+}
+@model Models.EntityFramework.SAN_PHAM
+
+
+@section jsFooter{
+
+    <script src="~/Public/Plugins/ckeditor/ckeditor.js"></script>
+
+    <script src="~/Public/admin/js/san-pham-edit.js"></script>
+   
+}
+
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-lg-12">
+
+                    @using (Html.BeginForm("Edit", "SanPham", FormMethod.Post, new { @class = "w-100", @enctype = "multipart/form-data" , @onsubmit ="return ValidateFormUpdate()" }))
+                   
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="text-primary">Sửa Sản Phẩm </strong> @Model.MA_SP
+                            </div>
+                            <div class="card-body card-block">
+                                @Html.HiddenFor(model => model.MA_SP)
+
+                                <div class="row form-group mb-3">
+                                    <div class="col col-md-3">
+                                        <label for="select" name="loai-san-pham" id="loai-san-pham" class=" form-control-label">Loại Sản Phẩm : </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+
+                                        @Html.DropDownListFor(model => model.ID_LSP, new SelectList(ViewBag.MovieType, "Value", "Text"), new { @id = "loai-san-pham", @class = "form-control-sm form-control loai-san-pham" })
+
+
+                                        <small class="form-text text-muted">This is a help text</small>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group mb-3">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Tên Sản Phẩm : </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        @Html.EditorFor(model => model.TEN_SP, new { htmlAttributes = new { @id = "ten-san-pham", @class = "form-control" } })
+
+                                        <small class="validate-ten-sp text-danger">
+                                            @Html.ValidationMessageFor(model => model.TEN_SP, "", new { @class = "help-block form-text text-danger" })
+                                        </small>
+
+                                    </div>
+                                </div>
+
+                                <div class="row form-group mb-3">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Slug :</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        @Html.EditorFor(model => model.SLUG, new { htmlAttributes = new { @id = "slug", @class = "form-control", @readonly = "readonly" } })
+                                        <small class="validate-slug text-danger">
+                                            @Html.ValidationMessageFor(model => model.SLUG, "", new { @class = "help-block form-text text-danger" })
+                                        </small>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="row form-group mb-3">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Giá Nhập : </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        @Html.EditorFor(model => model.GIA_NHAP, new { htmlAttributes = new { @type = "number", @min = "0", @id = "gia-nhap", @class = "form-control" } })
+                                        <small class="validate-gia-nhap text-danger">
+                                            @Html.ValidationMessageFor(model => model.GIA_NHAP, "", new { @class = "text-danger" })
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group mb-3">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Giá Bán : </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        @Html.EditorFor(model => model.GIA_BAN, new { htmlAttributes = new { @type = "number", @min = "0", @id = "gia-ban", @class = "form-control" } })
+                                        <small class="validate-gia-ban text-danger">
+                                            @Html.ValidationMessageFor(model => model.GIA_BAN, "", new { @class = "text-danger" })
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="row form-group mb-3">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Giảm Giá : </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        @Html.EditorFor(model => model.GIAM_GIA, new { htmlAttributes = new { @type = "number", @min = "0", @max = "100", @id = "giam-gia", @class = "form-control" } })
+                                        <small class="validate-giam-gia text-danger">
+                                            @Html.ValidationMessageFor(model => model.GIAM_GIA, "", new { @class = "text-danger" })
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="row form-group mb-3">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Đơn Vị Tính : </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        @Html.EditorFor(model => model.DON_VI_TINH, new { htmlAttributes = new { @id = "don-vi-tinh", @class = "form-control" } })
+                                        <small class="validate-don-vi-tinh text-danger">
+                                            @Html.ValidationMessageFor(model => model.DON_VI_TINH, "", new { @class = "text-danger" })
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group mb-3">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Mô Tả : </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        @Html.TextAreaFor(model => model.MO_TA, new { @id = "mo-ta", @rows = "5", @class = "mo-ta form-control" })
+                                        <small class="validate-mo-ta">
+                                            @Html.ValidationMessageFor(model => model.MO_TA, "", new { @class = "text-danger" })
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group mb-3">
+                                    <div class="col col-md-3">
+                                        <label for="mo-ta-chi-tiet" class=" form-control-label">Mô Tả Chi Tiết</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        @Html.TextAreaFor(model => model.MO_TA_CHI_TIET, new { @id = "mo-ta-chi-tiet", @rows = "9", @class = "mo-ta-chi-tiet form-control" })
+                                        <small class="validate-gia-nhap">
+                                            @Html.ValidationMessageFor(model => model.MO_TA_CHI_TIET, "", new { @class = "text-danger" })
+                                        </small>
+                                    </div>
+                                </div>
+
+
+                                <div class="row form-group mb-3">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Ảnh Chính</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <div class="form-group mb-3">
+                                            <input type="file" name="product-images" id="product-images" class="file-upload-default-image" style="position: absolute ; visibility: hidden;">
+                                            <div class="input-group col-xs-12">
+                                                @Html.EditorFor(model => model.LINK_ANH_CHINH, new { htmlAttributes = new { @class = "form-control  file-upload-info", @disabled = "", @placeholder = "Upload Image" } })
+
+                                                <span class="input-group-append">
+                                                    <button class="file-upload-image btn btn-primary" type="button">Upload</button>
+                                                </span>
+                                            </div>
+                                            <small class="validate-anh-chinh text-danger">
+                                                @Html.ValidationMessageFor(model => model.LINK_ANH_CHINH, "", new { @class = "text-danger" })
+                                            </small>
+                                            <div class="hien-thi-image-chinh" style="min-width: 200px; max-width:300px ; margin: 1rem auto;">
+                                                <img src="@Model.LINK_ANH_CHINH" alt="" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group mb-3">
+                                    <div class="col col-md-3">
+                                        <label for="email-input" class=" form-control-label">Ảnh Kèm Theo</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <div class="form-group mb-3">
+                                            <input type="file" name="product-list-images" id="product-list-img" class="file-upload-default-list-img" style="position: absolute ; visibility: hidden;" multiple="multiple">
+                                            <div class="input-group col-xs-12">
+
+                                                <input type="text" class="form-control file-upload-info" value="@Model.LIST_ANH_KEM.Split(',').Length  files " disabled="" placeholder="Upload Image">
+
+                                                <span class="input-group-append">
+                                                    <button class="file-upload-list-image btn btn-primary" type="button">Upload</button>
+                                                </span>
+                                            </div>
+                                            <small class="form-text text-muted text-danger validate-list-images"></small>
+                                            <div id="hien-thi-image-kem-theo" class="row mt-3">
+                                                @if (Model.LIST_ANH_KEM.Split(',').Length > 0)
+                                                {
+                                                    foreach (var str in Model.LIST_ANH_KEM.Split(','))
+                                                    {
+                                                        <div class="col-4 mb-2" style="min-height: 140px; height: 150px;">
+                                                            <img src="@str" style="width: 100%; height: 100%;">
+                                                        </div>
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row form-group mb-3">
+                                    <div class="col col-md-3">
+                                        <label for="select" class=" form-control-label">Nổi Bật :</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        @Html.CheckBox("NoiBat", Model.NOI_BAT.Value)
+                                    </div>
+                                </div>
+                                <div class="row form-group mb-3">
+                                    <div class="col col-md-3">
+                                        <label for="select" class=" form-control-label">Hiển Thị :</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        @Html.CheckBox("HienThi", Model.TRANG_THAI.Value)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                @if (ViewBag.Status != null)
+                                {
+                                    <div class="alert alert-primary">
+                                        @ViewBag.Status
+                                    </div>
+                                }
+                                <button type="submit" class="btn-submit-edit-product btn btn-success btn-sm">
+                                    <i class="fa fa-dot-circle-o"></i> Update
+                                </button>
+                                <a href="/admin/sanpham" class ="btn btn-danger btn-sm">
+                                    <i class="fa fa-ban"></i> Quay Lại
+                                </a>
+                            </div>
+                        </div>
+
+
+                    }
+
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong class="text-primary">Sửa Chi Tiết Sản Phẩm</strong> Màu / Size
+                        </div>
+                        <div class="card-body card-block">
+
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="row form-group">
+                                                <div class=" col-5">
+                                                    <strong for="text-input" class=" form-control-label">Danh Sách Màu (<small>chọn</small>) </strong>
+                                                </div>
+                                                <div class="col-7">
+                                                    <select class="form-select form-select-sm change-color " data-id="@Model.MA_SP.Trim()" aria-label=".form-select-sm example">
+                                                        @if (ViewBag.DropDownColor != null)
+                                                        {
+                                                            foreach (var option in ViewBag.DropDownColor)
+                                                            {
+                                                                <option value="@option.ID"> @option.TEN_MAU </option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <form method="post" class="form-edit-details" enctype="multipart/form-data" onsubmit="return ValidateSubmitFormDetailsUpdate()">
+
+                                            <div class="card-body card-block">
+                                                <div class="content-details-product">
+                                                    <div class="row form-group mb-3">
+                                                        <div class="col col-md-3">
+                                                            <p class=" card-title " style=" font-size: 15px; font-weight:600;">Tên màu : </p>
+                                                        </div>
+                                                        <div class="col-12 col-md-9">
+                                                            <input type="text" class="form-control form-control-sm " id="ten-mau-edit" name="ten-mau-edit" placeholder="Upload Image">
+                                                            <input type="text" class="form-control form-control-sm " id="slug-mau-edit" name="slug-mau-edit" hidden="hidden">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group mb-3">
+                                                        <div class="col col-md-3">
+                                                            <p class=" card-title " style=" font-size: 15px; font-weight:600;">Mã màu : </p>
+                                                        </div>
+                                                        <div class="col-12 col-md-9">
+                                                            <input type="color" name="ma-mau-edit" id="ma-mau-edit" class="form-control form-control-sm" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group mb-3">
+                                                        <div class="col col-md-3">
+                                                            <p class=" card-title" style=" font-size: 15px; font-weight:600;">Ảnh màu sản phẩm :</p>
+                                                        </div>
+                                                        <div class="col-12 col-md-9">
+                                                            <div class="upload-image-details">
+                                                                <div class="wrapper">
+                                                                    <div class="image">
+                                                                        <img src="" alt="Chọn File" class="image-color-edit">
+                                                                    </div>
+                                                                    <div class="content">
+                                                                        <div class="icon">
+                                                                            <i class="fas fa-cloud-upload-alt"></i>
+                                                                        </div>
+                                                                        <div class="text">No file chosen, yet!</div>
+                                                                    </div>
+                                                                    <div class="cancel-btn">
+                                                                        <i class="fas fa-times"></i>
+                                                                    </div>
+                                                                    <div class="file-name">File name here</div>
+                                                                </div>
+                                                                <button type="button" class="custom-btn">Choose a file</button>
+                                                                <input type="file" name="anh-mau-edit" hidden="hidden" class="anh-mau default-btn">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <p class="card-title mt-2" style=" font-size: 15px; font-weight:600;">Thông tin size và số lượng :</p>
+                                                    <table class="table table-sm table-bordered table-edit-details-size-quantity">
+                                                        <thead class="bg-secondary">
+                                                            <tr>
+                                                                <th width="45%">Size</th>
+                                                                <th width="45%">Số Lượng</th>
+                                                                <th width="10%">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="table-details-product-edit">
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <span class="btn-add-row-edit-details fa fa-plus-square" style="font-size:25px; color:forestgreen"></span>
+                                                                </td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                            <div class="card-footer">
+                                                <div><small class="text-danger validate-form-update-details"></small></div>
+                                                @if (ViewBag.Message != null)
+                                                {
+                                                    <div class="alert alert-primary">
+                                                        @ViewBag.Message
+                                                    </div>
+                                                }
+                                                <button type="submit" class="btn btn-success btn-sm">
+                                                    <i class="fa fa-dot-circle-o"></i> Update
+                                                </button>
+                                                <button type="reset" class="btn btn-danger btn-sm">
+                                                    <i class="fa fa-ban"></i> Reset
+                                                </button>
+                                            </div>
+
+                                        </form>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-5">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <strong style="line-height:31px;">Thêm Mới</strong> Create
+                                        </div>
+                                        @using (Html.BeginForm("CreateDetails", "SanPham", new { id = Model.MA_SP.Trim() }, FormMethod.Post, new { @class = "w-100", @enctype = "multipart/form-data" , @onsubmit="return ValidateFormCreateDetails()"}))
+
+                                        {
+                                            <div class="card-body card-block">
+                                                <div class="row form-group mb-3">
+                                                    <div class="col col-md-3">
+                                                        <p class=" card-title " style=" font-size: 15px; font-weight:600;">Tên màu : </p>
+                                                    </div>
+                                                    <div class="col-12 col-md-9">
+                                                        <input type="text" class="form-control form-control-sm " id="ten-mau-create" name="ten-mau-create" placeholder="Tên màu .....">
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group mb-3">
+                                                    <div class="col col-md-3">
+                                                        <p class=" card-title " style=" font-size: 15px; font-weight:600;">Slug : </p>
+                                                    </div>
+                                                    <div class="col-12 col-md-9">
+                                                        <input type="text" class="form-control form-control-sm " id="slug-create" name="slug-create" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group mb-3">
+                                                    <div class="col col-md-3">
+                                                        <p class=" card-title " style=" font-size: 15px; font-weight:600;">Mã màu : </p>
+                                                    </div>
+                                                    <div class="col-12 col-md-9">
+                                                        <input type="color" class="form-control form-control-sm " id="ma-mau-create" name="ma-mau-create">
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group mb-3">
+                                                    <div class="col col-md-3">
+                                                        <p class=" card-title " style=" font-size: 15px; font-weight:600;">Ảnh màu sản phẩm: </p>
+                                                    </div>
+                                                    <div class="col-12 col-md-9">
+
+                                                        <div class="upload-image-details">
+                                                            <div class="wrapper">
+                                                                <div class="image">
+                                                                    <img src="" alt="Chọn File">
+                                                                </div>
+                                                                <div class="content">
+                                                                    <div class="icon">
+                                                                        <i class="fas fa-cloud-upload-alt"></i>
+                                                                    </div>
+                                                                    <div class="text">No file chosen, yet!</div>
+                                                                </div>
+                                                                <div class="cancel-btn">
+                                                                    <i class="fas fa-times"></i>
+                                                                </div>
+                                                                <div class="file-name">File name here</div>
+                                                            </div>
+                                                            <button type="button" class="custom-btn">Choose a file</button>
+                                                            <input type="file" id="image-color-create" name="image-color-create" hidden="hidden" class="anh-mau-create default-btn">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <table class="table table-sm table-bordered table-edit-details-size-quantity">
+                                                    <thead class="bg-secondary">
+                                                        <tr>
+                                                            <th width="45%">Size</th>
+                                                            <th width="45%">Số Lượng</th>
+                                                            <th width="10%">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="table-details-product-create">
+
+                                                        
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td colspan="3">
+                                                                <span class="btn-add-row-create-details fa fa-plus-square" style="font-size:25px; color:forestgreen"></span>
+                                                            </td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+
+                                            </div>
+                                            <div class="card-footer">
+                                                <div><small class="text-danger validate-form-create-details"></small></div>
+
+                                                @if (ViewBag.StatusCreate != null)
+                                                {
+                                                    <div class="alert alert-primary">
+                                                        @ViewBag.StatusCreate
+                                                    </div>
+                                                }
+                                                <button type="submit" class="btn btn-success btn-sm">
+                                                    <i class="fa fa-dot-circle-o"></i> Create
+                                                </button>
+                                                <button type="reset" class="btn btn-danger btn-sm">
+                                                    <i class="fa fa-ban"></i> Reset
+                                                </button>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+

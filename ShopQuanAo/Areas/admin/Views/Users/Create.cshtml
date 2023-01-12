@@ -1,0 +1,150 @@
+﻿@model Models.EntityFramework.ACOUNT
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+}
+
+
+@section jsFooter{
+
+    <script src="~/Public/admin/js/customer.js"></script>
+}
+
+<div class="section__content section__content--p30 mt-3">
+    <div class="container-fluid">
+        <div class="row ml-0 mr-0">
+            @using (Html.BeginForm("Create", "Users", FormMethod.Post, new { @class = "w-100", @enctype = "multipart/form-data" }))
+            {
+
+                @Html.AntiForgeryToken()
+
+                <div class="card w-100">
+                    <div class="card-header d-flex pl-3 pr-3 justify-content-between align-items-center">
+                        <h3><strong>Thêm </strong> Tài Khoản </h3>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <p>
+                            @Html.ActionLink("Danh Sách", "Index", null, new { @class = "btn btn-success" })
+
+                        </p>
+                    </div>
+                    <div class="card-body card-block">
+                        @if (ViewBag.Err != null)
+                        {
+                            <div class="alert alert-danger">
+                                <strong>Error : !</strong> @ViewBag.Err
+                            </div>
+                        }
+                        <div class="row form-group mb-3">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Họ Tên:</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                @Html.EditorFor(model => model.HO_TEN, new { htmlAttributes = new { @class = "form-control", @onchange = "onchange_ten(this)" } })
+
+                                @Html.ValidationMessageFor(model => model.HO_TEN, "", new { @class = "help-block form-text text-danger" })
+
+
+                            </div>
+                        </div>
+                        <div class="row form-group mb-3">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Ảnh :</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <div class="upload-image-details">
+                                    <div class="wrapper">
+                                        <div class="image">
+                                            <img src="" alt="Chọn File">
+                                        </div>
+                                        <div class="content">
+                                            <div class="icon">
+                                                <i class="fas fa-cloud-upload-alt"></i>
+                                            </div>
+                                            <div class="text">No file chosen, yet!</div>
+                                        </div>
+                                        <div class="cancel-btn">
+                                            <i class="fas fa-times"></i>
+                                        </div>
+                                        <div class="file-name">File name here</div>
+                                    </div>
+                                    <button type="button" class="custom-btn">Choose a file</button>
+                                    <input type="file" name="images" hidden="hidden" class="anh-mau default-btn">
+                                </div>
+
+                            </div>
+                            <div class="col-12">
+
+                            </div>
+                        </div>
+                        <div class="row form-group mb-3">
+                            <div class="col col-md-3">
+                                <label for="email-input" class=" form-control-label">Địa chỉ :</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                @Html.EditorFor(model => model.DIA_CHI, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.DIA_CHI, "", new { @class = "help-block form-text text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row form-group mb-3">
+                            <div class="col col-md-3">
+                                <label for="email-input" class=" form-control-label">Số điện thoại :</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                @Html.EditorFor(model => model.PHONE, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.PHONE, "", new { @class = "help-block form-text text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row form-group mb-3">
+                            <div class="col col-md-3">
+                                <label for="email-input" class=" form-control-label">Email :</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                @Html.EditorFor(model => model.EMAIL, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.EMAIL, "", new { @class = "help-block form-text text-danger" })
+                            </div>
+                        </div>
+                        <div class="row form-group mb-3">
+                            <div class="col col-md-3">
+                                <label for="email-input" class=" form-control-label">Mật Khẩu :</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                @Html.EditorFor(model => model.MAT_KHAU, new { htmlAttributes = new { @type = "password", @minlength = "6", @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.MAT_KHAU, "", new { @class = "help-block form-text text-danger" })
+                            </div>
+                        </div>
+                        <div class="row form-group mb-3">
+                            <div class="col col-md-3">
+                                <label for="select" class=" form-control-label">Kích Hoạt :</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                @Html.CheckBox("HienThi", false)
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            <i class="fa fa-dot-circle-o"></i> Submit
+                        </button>
+                        <button type="reset" class="btn btn-danger btn-sm">
+                            <i class="fa fa-ban"></i> Reset
+                        </button>
+                    </div>
+                </div>
+            }
+
+
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="copyright">
+                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

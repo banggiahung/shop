@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+    var sessionUser = (ShopQuanAo.Session.UserSession)Session[ShopQuanAo.Session.CommonConstants.USER_SESSION];
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3" style="padding: 0 15px;">
+    <h3 class="">Xin Chào : @sessionUser.UserName</h3>
+</div>
+
+

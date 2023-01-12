@@ -1,0 +1,191 @@
+﻿@model Models.EntityFramework.SAN_PHAM
+
+@{
+    ViewBag.Title = "SanPham";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section cssHeader{
+    <style>
+
+        input.image-color {
+            position: absolute;
+            opacity: 0;
+            top: 0px;
+        }
+
+        img.image-color-details {
+            width: calc(100% - 4px) !important;
+            height: calc(100% - 4px);
+        }
+
+        label.radio-image {
+            box-sizing: border-box;
+            border: 1px solid;
+            width: calc(20% - 1%);
+            height: 5rem;
+            padding: 2px;
+            margin-top: 5px;
+        }
+
+            label.radio-image:hover {
+                border: 2px solid black;
+            }
+
+        iframe.fb_iframe_widget_lift {
+            width: 100% !important;
+        }
+    </style>
+}
+
+@section jsFooter{
+    <script>
+
+        $(document).ready(function () {
+            LoadDetailsProduct();
+            $(".radio-image").click(function (even) {
+                even.preventDefault();
+                $(".radio-image").css("border", "1px solid");
+                $(this).css("border", "2px solid red");
+                $(this).find('.image-color').prop('checked', true);
+                LoadSize($(this).find('.image-color').val());
+            });
+        });
+
+        function LoadDetailsProduct() {
+            $(".image-color:first").prop('checked', true);
+            $(".image-color:first").parent().css("border", "2px solid red");
+            LoadSize($(".image-color:first").val());
+        }
+
+        function LoadSize(id_color) {
+            $.ajax({
+                url: "/LoadSize/" + id_color,
+                dataType: 'json',
+                type: "GET",
+                success: function (data) {
+                    $("#SizeProduct").children().remove("option");
+                    if (data["data"].length > 0) {
+                        for (var i = 0; i < data["data"].length; i++) {
+                            var option = document.createElement("option");
+                            option.value = data["data"][i]["ID"];
+                            option.innerHTML = data["data"][i]["TEN_SIZE"];
+                            $("#SizeProduct").append(option);
+                        }
+                    } 
+                }
+            });
+        }
+
+    </script>
+}
+
+    <section class="container">
+
+
+        <ul class="b-crumbs" style=" margin-bottom:2rem;">
+            <li>
+                <a href="index.html">
+                    Home
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    @ViewBag.CategoryName
+                </a>
+            </li>
+            <li>
+                <span>@Model.TEN_SP</span>
+            </li>
+        </ul>
+        
+        <!-- Single Product - start -->
+        <div class="prod-wrap">
+
+            <!-- Product Images -->
+
+            @Html.Action("LoadImageProductDetalis", "Home", new { id = Model.MA_SP })
+
+
+            <!-- Product Description/Info -->
+            <form action="@Url.RouteUrl("giohang" , new { action="InsertCart" , id = Model.MA_SP.Trim() })" method="post">
+                <div class="prod-cont">
+                    <h1 class="main-ttl"><span>@Model.TEN_SP</span></h1>
+
+                    <div class="prod-skuwrap">
+                        <div style="margin-bottom:1rem">
+                            <span class="prod-skuttl">Giá Bán : </span> <b>@String.Format("{0:0,0}", Model.GIA_BAN - (Model.GIA_BAN * Model.GIAM_GIA)/100)</b><sup>vnđ</sup>
+                        </div>
+                        <div style="margin-bottom:1rem">
+                            <span class="prod-skuttl">Đơn vị tính  : </span> @Model.DON_VI_TINH
+                        </div>
+                        <p class="prod-skuttl">Color : </p>
+                        <div class="image-color-product" style="margin-bottom:1rem;">
+                            @Html.Action("LoadColor", "Home", new { id = Model.MA_SP })
+                        </div>
+
+
+                        <p class="prod-skuttl">Size : </p>
+                        <div class="offer-props-select" style="margin-bottom:0px;">
+                            <div class="form-group">
+                                <select class="form-control" id="SizeProduct" name="idSize">
+                                   
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="prod-info">
+
+                        <p class="prod-qnt">
+                            <input value="1" id="quatity" name="quantity" type="number" min="1" style="float: left; width: 60px; height: 39px; font-weight: 700; font-size: 14px; color: #373d54; text-align: center; display: block; margin: 0 2px 0 0; background: #f8fafc; border: 1px solid #e0e4f6">
+
+                        </p>
+                        <p class="prod-addwrap">
+                            <button type="submit" class="prod-add" rel="nofollow">Add to cart</button>
+                        </p>
+                    </div>
+            </form>
+        </div>
+
+            <!-- Product Tabs -->
+            <div class="prod-tabs-wrap">
+                <ul class="prod-tabs">
+                    <li><a data-prodtab-num="1" class="active" href="#" data-prodtab="#prod-tab-1">Mô Tả</a></li>
+                    <li><a data-prodtab-num="2" href="#" data-prodtab="#prod-tab-2">Chi Tiết</a></li>
+                    <li><a data-prodtab-num="3" href="#" data-prodtab="#prod-tab-3">Đánh Giá</a></li>
+                </ul>
+                <div class="prod-tab-cont">
+
+                    <p data-prodtab-num="1" class="prod-tab-mob active" data-prodtab="#prod-tab-1">Mô tả</p>
+                    <div class="prod-tab stylization" id="prod-tab-1">
+                        <p>@Model.MO_TA</p>
+                    </div>
+                    <p data-prodtab-num="2" class="prod-tab-mob" data-prodtab="#prod-tab-2">Chi Tiết</p>
+                    <div class="prod-tab prod-tab-articles" id="prod-tab-2">
+                        @Html.Raw(Model.MO_TA_CHI_TIET)
+                    </div>
+                    <p data-prodtab-num="3" class="prod-tab-mob" data-prodtab="#prod-tab-3">Đánh Giá</p>
+                    <div class="prod-tab" id="prod-tab-3">
+                       
+                        <div id="fb-root"></div>
+                        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v11.0&appId=1393238477712926&autoLogAppEvents=1" nonce="sDxx69Fa"></script>
+                        <div class="fb-comments" data-href=" @HttpContext.Current.Request.Url.OriginalString.ToString()" data-width="100%" data-numposts="5"></div>
+                   
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- Single Product - end -->
+        <!-- Related Products - start -->
+        <div class="prod-related">
+            <h2><span>Sản Phẩm Nổi Bật</span></h2>
+            <div class="prod-related-car" id="prod-related-car">
+                <ul class="slides">
+                    @Html.Action("LoadProductNoiBat", "Home")
+                </ul>
+            </div>
+        </div>
+        <!-- Related Products - end -->
+
+    </section>

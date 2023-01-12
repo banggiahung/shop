@@ -1,0 +1,62 @@
+﻿
+@{
+    Layout = null;
+
+    var sessionUser = (ShopQuanAo.Session.UserSession)Session[ShopQuanAo.Session.CommonConstants.USER_SESSION];
+}
+
+<header class="header-desktop">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="header-wrap">
+                <form class="form-header" method="get">
+                    <input class="au-input au-input--xl" type="text" name="search" value="@ViewBag.Search" placeholder="Thông tin tìm kiếm" />
+                    <button class="au-btn--submit" type="submit">
+                        <i class="zmdi zmdi-search"></i>
+                    </button>
+                </form>
+                <div class="header-button">
+                   
+                    <div class="account-wrap">
+                        <div class="account-item clearfix js-item-menu">
+                            <div class="image">
+                                <img src="@sessionUser.image" alt="@sessionUser.UserName" />
+                            </div>
+                            <div class="content">
+                                <a class="js-acc-btn" href="#">@sessionUser.UserName</a>
+                            </div>
+                            <div class="account-dropdown js-dropdown">
+                                <div class="info clearfix">
+                                    <div class="image">
+                                        <a href="#">
+                                            <img src="@sessionUser.image" alt="@sessionUser.UserName" />
+                                        </a>
+                                    </div>
+                                    <div class="content">
+                                        <h5 class="name">
+                                            <a href="#">@sessionUser.UserName</a>
+                                        </h5>
+                                       
+                                    </div>
+                                </div>
+                                <div class="account-dropdown__body">
+                                    
+                                    <div class="account-dropdown__item">
+                                        <a href="@Url.Action("Edit" , "Users" , new { id = sessionUser.UserID })">
+                                            <i class="zmdi zmdi-settings"></i>Setting
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="account-dropdown__footer">
+                                    <a href="@Url.Action("Logout", "Login")">
+                                        <i class="zmdi zmdi-power"></i>Logout
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

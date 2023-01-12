@@ -1,0 +1,176 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+}
+
+@model PagedList.IPagedList<Models.ADO.ModelsSanPham>
+
+@using PagedList.Mvc;
+
+@section jsFooter{
+    <script>$(document).ready(function () {
+            $(".btn-view-details").off("click").on("click", function (e) {
+                e.preventDefault();
+                var id = $(this).data("id");
+
+                $("#Modal-" + id).modal();
+            });
+
+            $(document).on("click", ".btn-view-edit-sp", function (e) {
+                e.preventDefault();
+                var id = $(this).data("id");
+                location.href = "/admin/sanpham/edit/" + id;
+            });
+        });</script>
+    <script>$(".btn-view-delete-sp").off("click").on("click", function (e) {
+            e.preventDefault();
+            var btn = $(this);
+            var id = btn.data("id");
+            console.log(id);
+            Swal.fire({
+                title: 'Delete',
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/admin/SanPham/Delete/' + id,
+                        dataType: 'json',
+                        type: "get"
+                    }).done(function (data) {
+                        // If successful
+                        if (data.status == "success") {
+                            Swal.fire("", "", data.status);
+                            var row = $(".table-product").children("tbody").find("tr#row_" + id);
+                            row.remove();
+                        } else {
+                            Swal.fire("", "", data.status);
+                        }
+                    })
+                }
+            });
+        });</script>
+}
+@section cssHeader{
+
+    <style>
+        ul.pagination {
+            justify-content: center;
+        }
+
+            ul.pagination li {
+                display: inline;
+                background: #e9ecef;
+            }
+
+                ul.pagination li.active {
+                    background: teal;
+                    color: white;
+                }
+
+                ul.pagination li a {
+                    color: black;
+                    float: left;
+                    padding: 8px 16px;
+                    text-decoration: none;
+                    font-size: 16px;
+                    transition: background-color .3s;
+                }
+
+                    ul.pagination li a.active {
+                        background: teal;
+                        color: white;
+                    }
+
+                    ul.pagination li a:hover:not(.active) {
+                        background-color: #ddd;
+                    }
+    </style>
+
+}
+
+
+
+
+<div class="d-flex justify-content-between align-items-center mb-3" style="padding: 0 15px;">
+    <h3 class="">Sản phẩm không bán được</h3>
+
+    <p>
+        @Html.ActionLink("Thêm Mới", "Create", null, new { @class = "btn btn-success" })
+    </p>
+</div>
+
+<div class="section__content section__content--p30">
+
+
+
+    <div class="container-fluid">
+        <div class="row m-t-30">
+            <div class="col-md-12">
+                <!-- DATA TABLE-->
+
+
+                <div class="table-responsive m-b-40">
+                    <table class="table table-borderless table-data3 table-product">
+                        <thead>
+                            <tr>
+                                <th>Mã</th>
+                                <th width="10%">Loại SP</th>
+                                <th width="15%">Tên Sản Phẩm</th>
+                                <th class="th-image">Hình Ảnh</th>
+                                <th>Số lượng</th>
+                                <th>Đơn vị tính</th>
+                                <th>Giá nhập</th>
+                                <th>Giá bán</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag._spKhoangBandc)
+                            {
+                                <tr>
+                                    <td>@item.MaSP</td>
+                                    <td>@item.loaiSP</td>
+                                    <td>@item.TenSP</td>
+                                    <td>
+                                        <div class="image-product">
+                                            <img src="@item.LinkAnh" alt="" class="w-100 h-100" />
+                                        </div>
+                                    </td>
+                                    <td>@item.soLuong</td>
+                                    <td>@item.donViTinh</td>
+                                    <td>@String.Format("{0:0,0}", item.giaNhap)<sup>đ</sup></td>
+                                    <td>@String.Format("{0:0,0}", item.giaBan)<sup>đ</sup></td>
+                                    <td class="process">
+
+                                        <span class="badge badge-pill @((@item.trangThai == true)?"badge bg-success":"")">
+                                            @((@item.trangThai == true)? " tồn kho" : "")
+                                        </span>
+
+
+                                    </td>
+
+
+
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

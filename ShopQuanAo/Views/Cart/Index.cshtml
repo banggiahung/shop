@@ -1,0 +1,148 @@
+﻿@model List<ShopQuanAo.Object.CartItem>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section jsFooter{
+        
+        <script>
+            $(document).on("change", ".quantity", function (e) {
+                e.preventDefault();
+                var quantity = $(this).val();
+                quantity = Number(quantity);
+                var id = $(this).data("id");
+                $.ajax({
+                    url: '/GioHang/Update/' + id + '/' + quantity,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        location.reload();
+                    }
+                });
+            });
+            $(document).on("click", ".cart-remove", function (e) {
+                e.preventDefault();
+                var id = $(this).data("id");
+                $.ajax({
+                    url: '/GioHang/Delete/' + id ,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        location.reload();
+                    }
+                });
+            });
+        </script>
+    
+    }
+<section class="container stylization maincont">
+    <ul class="b-crumbs">
+        <li>
+            <a href="/">
+                Home
+            </a>
+        </li>
+        <li>
+            <span>Cart</span>
+        </li>
+    </ul>
+    <h1 class="main-ttl"><span>Cart</span></h1>
+    <!-- Cart Items - start -->
+
+        <div class="cart-items-wrap">
+            <table class="cart-items">
+                <thead>
+                    <tr>
+                        <td class="cart-image">Photo</td>
+                        <td class="cart-ttl">Products</td>
+                        <td class="cart-price">Price</td>
+                        <td class="cart-quantity">Quantity</td>
+                        <td class="cart-summ">Summ</td>
+                        <td class="cart-del">&nbsp;</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="cart-image">
+                                <a href="product.html">
+                                    <img src="@item.Image" alt="Product">
+                                </a>
+                            </td>
+                            <td class="cart-ttl">
+                                <a href="@Url.RouteUrl("RouteClient" , new { action="SanPham" , id = item.SLUG })">@item.TEN_SP</a>
+                                <p>Color: @item.Color</p>
+                                <p>Size: @item.Size</p>
+                            </td>
+                            <td class="cart-price">
+                                <b>@String.Format("{0:0,0}", item.GIA_BAN) VNĐ</b>
+                            </td>
+                            <td class="cart-quantity">
+                               
+                                    <input style="width:80px; padding:5px;"  value="@item.quantity" class="quantity" data-id="@item.DetailsProductID" type="number" min="0">
+                               
+                            </td>
+                            <td class="cart-summ">
+                                <b> @String.Format("{0:0,0}", (item.GIA_BAN * item.quantity)) VNĐ</b>
+                                <p class="cart-forone">unit price <b>$220</b></p>
+                            </td>
+                            <td class="cart-del">
+                                <a href="Javascript:Void(0)" class="cart-remove"  data-id="@item.DetailsProductID" ></a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+        <ul class="cart-total">
+            <li class="cart-summ">TOTAL: 
+                <b>
+                    @if (Model.Count > 0)
+                    {
+                         @String.Format("{0:0,0} VNĐ", Model.Sum(x => (x.GIA_BAN * x.quantity)))
+                    }
+                    else
+                    {
+                        @String.Format(" 0 VNĐ")
+                    }
+
+
+                </b>
+            </li>
+        </ul>
+        <div class="cart-submit">
+            <form action="@Url.RouteUrl("giohang" , new { action="ThanhToan" })" method="post">
+                @Html.AntiForgeryToken()
+                <div class="auth-col">
+                    <h2>Thông Tin</h2>
+
+                    <p>
+                        <label for="username">Tên Người Nhận <span class="required">*</span></label><input type="text" name="username" id="username">
+                    </p>
+                    <p>
+                        <label for="phone">Số Điện Thoại <span class="required">*</span></label><input type="text" name="phone" id="phone">
+                    </p>
+                    <p>
+                        <label for="diachi">Địa Chỉ Nhận <span class="required">*</span></label><input type="text" name="diachi" id="diachi">
+                    </p>
+                    <p>
+                        <label for="note">Ghi Chú <span class="required">*</span></label><textarea cols="4" id="password" name="note"></textarea>
+                    </p>
+                    @if (Session["ThanhToan"]!= null)
+                    {
+                        <p class=" alert-success"> @Session["ThanhToan"]</p>
+                        Session.Remove("ThanhToan");
+                    }
+                </div>
+                <button type="submit" class="cart-submit-btn">Mua Hàng</button>
+                <a href="@Url.RouteUrl("giohang", new { action = "DeleteCart" })" class=" cart-clear ">Hủy Đơn</a>
+
+               </form>
+        </div>
+    <!-- Cart Items - end -->
+
+</section>
+

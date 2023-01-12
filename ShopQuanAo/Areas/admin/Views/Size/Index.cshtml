@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+}
+
+@model List<Models.EntityFramework.SIZE>
+@section jsFooter{
+
+    <script src="~/Public/admin/js/size.js"></script>
+}
+<div class="section__content section__content--p30">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="card">
+                    <div class="card-header text-center"><strong>Danh Sách Size Sản Phẩm</strong></div>
+                    <div class="card-body">
+
+                        <table class="table table-borderless table-data3" align="center">
+                            <thead>
+                                <tr align="center">
+                                    <th width="15%" class="text-center" align="center" style="padding:18px 0px;">MÃ</th>
+                                    <th width="20%" class="text-center" align="center" style="padding: 18px 0px;">Tên Size</th>
+                                    <th width="40%" class="text-center" align="center" style="padding: 18px 0px;">Mô Tả</th>
+                                    <th width="20%" class="text-center" align="center" style="padding: 18px 0px;">status</th>
+                                    <th width="5%" style="padding: 18px 0px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr align="center">
+                                        <td align="center">@Html.DisplayFor(modelItem => item.ID)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.TEN_SIZE)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.MO_TA)</td>
+                                        <td>
+                                            <span data-id="@item.ID" class="badge badge-pill btn-active-size @((item.TRANG_THAI == true)?"badge-success":"badge-danger")">
+                                                <i class="fa  @((item.TRANG_THAI == true)?"fa-eye":"fa-eye-slash")">@((item.TRANG_THAI == true)? "  Active" : "  Die")</i>
+                                            </span>
+                                        </td>
+                                        <td style="padding-right:5px;">
+                                            <div class="table-data-feature">
+
+                                                <button class="item btn-edit-size" data-toggle="tooltip" data-id="@item.ID" data-placement="top" title="" data-original-title="Edit">
+                                                    <i class="zmdi zmdi-edit"></i>
+                                                </button>
+                                                <button class="item btn-delete-size" data-toggle="tooltip" data-id="@item.ID" data-placement="top" title="" data-original-title="Delete">
+                                                    <i class="zmdi zmdi-delete"></i>
+                                                </button>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+
+
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <strong>Size  (Thêm ) / ( Sửa ) </strong> 
+                    </div>
+                    <div class="card-body card-block">
+
+                        <div class="row form-group" style=" position:absolute ; top:0px ; left:0px;visibility: hidden;">
+                            <div class="col col-md-4">
+                                <label for="hf-email" class=" form-control-label">ID :</label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <input type="number" id="id" name="id" placeholder="Enter Tên Màu ..." class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-4">
+                                <label for="ten-size" class=" form-control-label">Tên Size :</label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <input type="text" id="ten-size" name="ten-size" placeholder="Enter Tên Màu ..." class="form-control">
+                                <span class="validate-ten-size text-danger" style="font-size: .8rem;"></span>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-4">
+                                <label for="slug" class=" form-control-label">Slug  : </label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <input type="text" id="slug" name="slug" placeholder="Enter Slug ..." class="form-control" readonly>
+                                <span class="validate-slug text-danger" style="font-size: .8rem;"></span>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-4">
+                                <label for="mo-ta" class=" form-control-label">Mô Tả :</label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <textarea name="mo-ta" id="mo-ta" rows="5" placeholder="Content..." class="form-control"></textarea>
+                                <span class="validate-mo-ta text-danger" style="font-size: .8rem;"></span>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-success btn-sm btn-add-size">
+                            <i class="fa fa-dot-circle-o"></i> Thêm
+                        </button>
+                        <button type="button" class="btn btn-warning btn-sm btn-update-size">
+                            <i class="fa fa-pencil-square-o"></i> Sửa
+                        </button>
+                        <button type="reset" class="btn btn-danger btn-sm btn-reset">
+                            <i class="fa fa-ban"></i> Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="copyright">
+                    <p>Copyright © 2018 sizelib. All rights reserved. Template by <a href="https://sizelib.com">sizelib</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

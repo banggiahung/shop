@@ -1,0 +1,197 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+}
+
+@model PagedList.IPagedList<Models.EntityFramework.BAI_VIET>
+
+@using PagedList.Mvc;
+
+
+@section jsFooter{
+    <script>
+        $(".btn-delete-tintuc").off("click").on("click", function (e) {
+            e.preventDefault();
+            var btn = $(this);
+            var id = btn.data("id");
+            console.log(id);
+            Swal.fire({
+                title: 'Delete',
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/admin/TinTuc/Delete/' + id,
+                        dataType: 'json',
+                        type: "get"
+                    }).done(function (data) {
+                        // If successful
+                        if (data.status == "success") {
+                            Swal.fire("", "", data.status);
+                            var row = $(".table-lsp").children("tbody").find("tr#row_" + id);
+                            row.remove();
+                        } else {
+                            Swal.fire("", "", data.status);
+                        }
+                    })
+                }
+            });
+        });
+    </script>
+
+}
+@section cssHeader{
+
+    <style>
+        ul.pagination {
+            justify-content: center;
+        }
+
+            ul.pagination li {
+                display: inline;
+                background: #e9ecef;
+            }
+
+                ul.pagination li.active {
+                    background: teal;
+                    color: white;
+                }
+
+                ul.pagination li a {
+                    color: black;
+                    float: left;
+                    padding: 8px 16px;
+                    text-decoration: none;
+                    font-size: 16px;
+                    transition: background-color .3s;
+                }
+
+                    ul.pagination li a.active {
+                        background: teal;
+                        color: white;
+                    }
+
+                    ul.pagination li a:hover:not(.active) {
+                        background-color: #ddd;
+                    }
+    </style>
+
+}
+
+
+
+<div class="d-flex pl-3 pr-3 justify-content-between align-items-center mb-3">
+    <h3 class="">Danh Sách Loại Sản Phẩm</h3>
+
+    <p>
+        @Html.ActionLink("Thêm Mới", "Create", null, new { @class = "btn btn-success" })
+    </p>
+</div>
+<div class="section__content section__content--p30">
+
+    <div class="container-fluid">
+        <div class="row m-t-3">
+            <div class="col-md-12">
+                <!-- DATA TABLE-->
+                @if (ViewBag.Success != null)
+                {
+                    <div class="alert alert-success">
+                        <strong>Success : !</strong>@ViewBag.Success
+                    </div>
+                }
+
+                <div class="table-responsive m-b-40" style=" position:relative;">
+                    <table class="table table-borderless table-data3 ">
+
+                        <thead>
+                            <tr>
+                                <th class="text-center" width="5%">ID</th>
+                                <th class="text-center" width="25%">Tiêu Đề</th>
+                                <th class="text-center" width="20%">Ảnh</th>
+                                <th class="text-center" width="20%">Mô Tả</th>
+                                <th class="text-center" width="10%">Ngày Tạo</th>
+                                <th class="text-center" width="8%">Nổi Bật</th>
+                                <th class="text-center" width="8%">Status</th>
+                                <th class="text-center" width="5%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                            @foreach (var item in Model)
+                            {
+                                <tr id="row_@item.MA_BV">
+                                    <td align="center"> @Html.DisplayFor(modelItem => item.MA_BV)</td>
+                                    <td> @Html.DisplayFor(modelItem => item.TIEU_DE)</td>
+                                    <td align="center">
+                                        <div class="images" style="max-width:100%;">
+                                            <img src="@item.IMAGES" alt="" class="w-100" style="max-height:130px;" />
+                                        </div>
+                                    </td>
+                                    <td> @Html.DisplayFor(modelItem => item.MO_TA)</td>
+                                    <td align="center"> @Html.DisplayFor(modelItem => item.NGAY_DANG)</td>
+                                    <td align="center" class="process">
+
+                                        <span data-id="@item.MA_BV" class="badge badge-pill btn-active-lsp @((item.NOI_BAT == true)?"badge bg-success":"badge bg-danger")">
+                                            <i class="fa  @((item.NOI_BAT == true)?"fa-eye":"fa-eye-slash")">@((item.NOI_BAT == true)? "  Active" : "  Die")</i>
+                                        </span>
+
+
+                                    </td>
+                                    <td align="center" class="process">
+
+                                        <span data-id="@item.MA_BV" class="badge badge-pill btn-active-lsp @((item.TRANG_THAI == true)?"badge bg-success":"badge bg-danger")">
+                                            <i class="fa  @((item.TRANG_THAI == true)?"fa-eye":"fa-eye-slash")">@((item.TRANG_THAI == true)? "  Active" : "  Die")</i>
+                                        </span>
+
+
+                                    </td>
+                                    <td align="center">
+                                        <div class="table-data-feature">
+
+                                            <a href="@Url.Action("Edit", "TinTuc", new { id = item.MA_BV })" class="btn item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit">
+                                                <i class="zmdi zmdi-edit"></i>
+                                            </a>
+
+                                            <a class="btn item btn-delete-tintuc" data-toggle="tooltip" data-id="@item.MA_BV" data-placement="top" title="" data-original-title="Delete">
+                                                <i class="zmdi zmdi-delete"></i>
+                                            </a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+
+
+
+                            <tr>
+                                <td colspan="8" class="align-items-center">
+                                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+                               {
+                                   DisplayLinkToIndividualPages = true,
+                                   DisplayPageCountAndCurrentLocation = false,
+                                   MaximumPageNumbersToDisplay = 10,
+                                   LiElementClasses = new string[] { "page-item" }
+                               })
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- END DATA TABLE-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="copyright">
+                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Models.EntityFramework.LOAI_SAN_PHAM>
+
+<ul class="topcatalog-list">
+    @foreach (var item in Model)
+    {
+
+
+        if (item.TRANG_THAI == true && item.IS_REMOVE == false) { 
+            <li>
+                @Html.RouteLink(item.TEN_LOAI_SP, new { controller = "Home", action = "DanhMuc", id = item.SLUG })
+                @*<a href="catalog-list.html"> @item.TEN_LOAI_SP</a>*@
+                @Html.Action("LoadChilden", "Home", new { parentID = (int)item.ID_LOAI_SP })
+            </li>
+        }
+    }
+</ul>

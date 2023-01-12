@@ -1,0 +1,85 @@
+﻿@model Models.EntityFramework.LOAI_SAN_PHAM
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="section__content section__content--p30">
+    <div class="container-fluid">
+        <div class="row">
+            @using (Html.BeginForm("Edit", "LoaiSanPham", FormMethod.Post, new { @class = "w-100" }))
+            {
+                @Html.AntiForgeryToken()
+            <div class="card w-100">
+                <div class="card-header d-flex pl-3 pr-3 justify-content-between align-items-center">
+                    <h3><strong>Sửa </strong> Danh Mục Loại Sản Phẩm : @Model.ID_LOAI_SP </h3>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <p>
+                        @Html.ActionLink("Danh Sách", "Index", null, new { @class = "btn btn-success" })
+
+                    </p>
+                    @Html.HiddenFor(model => model.ID_LOAI_SP)
+                </div>
+                
+                <div class="card-body card-block">
+                    @if (ViewBag.Err != null)
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Error : !</strong> @ViewBag.Err
+                        </div>
+                    }
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="text-input" class=" form-control-label">Tên Loại Sản Phẩm :</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            @Html.EditorFor(model => model.TEN_LOAI_SP, new { htmlAttributes = new { @class = "form-control", @onchange = "onchange_ten(this)" } })
+
+                            @Html.ValidationMessageFor(model => model.TEN_LOAI_SP, "", new { @class = "help-block form-text text-danger" })
+
+
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="email-input" class=" form-control-label">Slug :</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            @Html.EditorFor(model => model.SLUG, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.SLUG, "", new { @class = "help-block form-text text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="select" class=" form-control-label">Thuộc Loại Sản Phẩm</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            @Html.DropDownListFor(model => model.ID_CHA, new SelectList(ViewBag.MovieType, "Value", "Text"), new { @class = "form-control" })
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fa fa-dot-circle-o"></i> Update
+                    </button>
+                    <button type="reset" class="btn btn-danger btn-sm">
+                        <i class="fa fa-ban"></i> Reset
+                    </button>
+                </div>
+            </div>
+            }
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="copyright">
+                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

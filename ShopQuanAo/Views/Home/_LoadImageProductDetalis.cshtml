@@ -1,0 +1,32 @@
+﻿
+<div class="prod-slider-wrap">
+    <div class="prod-slider">
+        <ul class="prod-slider-car">
+            @foreach (var item in ViewBag.ArrImage)
+            {
+                <li>
+                    <a data-fancybox-group="product" class="fancy-img" href="@item">
+                        <img src="@item" alt="">
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="prod-thumbs">
+        <ul class="prod-thumbs-car">
+            @{
+                var i = 0;
+                foreach(var item in ViewBag.ArrImage)
+                {
+                   
+                    <li>
+                        <a data-slide-index="@i" href="#">
+                            <img src="@item" alt="">
+                        </a>
+                    </li>
+                    i++;
+                }
+            }
+        </ul>
+    </div>
+</div>

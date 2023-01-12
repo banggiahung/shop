@@ -1,0 +1,187 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+
+}
+
+@model PagedList.IPagedList<Models.ADO.ModelsSanPham>
+
+@using PagedList.Mvc;
+
+@section jsFooter{
+    <script>
+        $(document).ready(function () {
+            $(".btn-view-details").off("click").on("click", function (e) {
+                e.preventDefault();
+                var id = $(this).data("id");
+                $("#Modal-" + id).modal();
+            });
+            $(document).on("click", ".btn-view-edit-sp", function (e) {
+                e.preventDefault();
+                var id = $(this).data("id");
+                location.href = "/admin/sanpham/edit/" + id;
+            });
+        });</script>
+    <script>
+        $(".btn-view-delete-sp").off("click").on("click", function (e) {
+            e.preventDefault();
+            var btn = $(this);
+            var id = btn.data("id");
+            console.log(id);
+            Swal.fire({
+                title: 'Delete',
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/admin/SanPham/Delete/' + id,
+                        dataType: 'json',
+                        type: "get"
+                    }).done(function (data) {
+                        // If successful
+                        if (data.status == "success") {
+                            Swal.fire("", "", data.status);
+                            var row = $(".table-product").children("tbody").find("tr#row_" + id);
+                            row.remove();
+                        } else {
+                            Swal.fire("", "", data.status);
+                        }
+                    })
+                }
+            });
+        });</script>
+}
+@section cssHeader{
+
+    <style>
+        ul.pagination {
+            justify-content: center;
+        }
+
+            ul.pagination li {
+                display: inline;
+                background: #e9ecef;
+            }
+
+                ul.pagination li.active {
+                    background: teal;
+                    color: white;
+                }
+
+                ul.pagination li a {
+                    color: black;
+                    float: left;
+                    padding: 8px 16px;
+                    text-decoration: none;
+                    font-size: 16px;
+                    transition: background-color .3s;
+                }
+
+                    ul.pagination li a.active {
+                        background: teal;
+                        color: white;
+                    }
+
+                    ul.pagination li a:hover:not(.active) {
+                        background-color: #ddd;
+                    }
+    </style>
+
+}
+
+
+
+
+<div class="d-flex justify-content-between align-items-center mb-3" style="padding: 0 15px;">
+    <h3 class="">Doanh thu tháng: (lấy dữ liệu tháng)</h3>
+
+    @*<p>
+            @Html.ActionLink("Thêm Mới", "Create", null, new { @class = "btn btn-success" })
+        </p>*@
+    <div>
+        <label for="start">Chọn tháng:</label>
+        <input type="month" id="start" name="start"
+               min="2018-03" value="2022-05">
+
+    </div>
+
+</div>
+
+<div class="section__content section__content--p30">
+
+    <div class="container-fluid">
+        <div class="row m-t-30">
+            <div class="col-md-12">
+                <!-- DATA TABLE-->
+
+                <div class="table-responsive m-b-40">
+                    <table class="table table-borderless table-data3 table-product">
+                        <thead>
+                            <tr>
+                                <th width="10%">Ngày</th>
+                                <th width="20%">ID hóa đơn</th>
+                                <th width="20%">Trạng thái hóa đơn</th>
+
+                                <th width="15%">Tiền hàng</th>
+                                <th width="15%">Tổng tiền hàng nhận</th>
+                                <th width="15%">Tiền thuế</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag._dtThang)
+            {
+                                <tr>
+                                    <td>Now</td>
+                                    <td>@item.id</td>
+                                    <td>
+                                  @item.trangThai
+                                    </td>
+                                    <td>@String.Format("{0:0,0}", item.tienhang)<sup>đ</sup></td>
+                                    <td>@String.Format("{0:0,0}", item.tienhang)<sup>đ</sup></td>
+
+                                    <td>0<sup>đ</sup></td>
+
+                                </tr>
+            }
+                            
+                        </tbody>
+                    </table>
+                </div>
+                
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    @*<tr>
+            <td colspan="12" class="align-items-center">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, search = @ViewBag.Search }), new PagedListRenderOptions
+                {
+                    DisplayLinkToIndividualPages = true,
+                    DisplayPageCountAndCurrentLocation = false,
+                    MaximumPageNumbersToDisplay = 10,
+                    LiElementClasses = new string[] { "page-item" }
+                })
+            </td>
+        </tr>*@
+
+    @*</tbody>
+        </table>*@
+</div>
+<!-- END DATA TABLE-->
+<div class="row">
+    <div class="col-md-12">
+        <div class="copyright">
+        </div>
+    </div>
+</div>

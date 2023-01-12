@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Models.EntityFramework.SAN_PHAM>
+
+@foreach (var item in Model)
+{
+  
+    <li class="discounts-i">
+        <a href="product.html" class="discounts-i-img">
+            <img src="@item.LINK_ANH_CHINH" alt="@item.TEN_SP">
+        </a>
+        <h3 class="discounts-i-ttl">
+            @Html.RouteLink(item.TEN_SP , new {action = "SanPham" , id = item.SLUG})
+           @* <a href="@Html.RouteLink("RouteClient",new { action = "SanPham" , id = item.SLUG })">content</a>*@
+           @* <a href="@Url.Action("SanPham" , "Home" , new { id = item.SLUG})">@item.TEN_SP</a>*@
+        </h3>
+        <p class="discounts-i-price">
+            <b>@String.Format("{0:0,0}", item.GIA_BAN - (item.GIA_BAN * item.GIAM_GIA)/100)</b> VND
+        </p>
+    </li>
+}

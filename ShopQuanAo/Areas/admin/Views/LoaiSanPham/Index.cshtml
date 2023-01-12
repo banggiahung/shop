@@ -1,0 +1,138 @@
+﻿@model PagedList.IPagedList<Models.EntityFramework.LOAI_SAN_PHAM>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+}
+@section cssHeader{
+
+    <style>
+        ul.pagination {
+            justify-content: center;
+        }
+
+            ul.pagination li {
+                display: inline;
+                background: #e9ecef;
+            }
+
+                ul.pagination li.active {
+                    background: teal;
+                    color: white;
+                }
+
+                ul.pagination li a {
+                    color: black;
+                    float: left;
+                    padding: 8px 16px;
+                    text-decoration: none;
+                    font-size: 16px;
+                    transition: background-color .3s;
+                }
+
+                    ul.pagination li a.active {
+                        background: teal;
+                        color: white;
+                    }
+
+                    ul.pagination li a:hover:not(.active) {
+                        background-color: #ddd;
+                    }
+    </style>
+
+}
+
+
+<div class="d-flex pl-3 pr-3 justify-content-between align-items-center mb-3">
+    <h3 class="">Danh Sách Loại Sản Phẩm</h3>
+
+    <p>
+        @Html.ActionLink("Thêm Mới", "Create", null, new { @class = "btn btn-success" })
+    </p>
+</div>
+<div class="section__content section__content--p30">
+
+    <div class="container-fluid">
+        <div class="row m-t-3">
+            <div class="col-md-12">
+                <!-- DATA TABLE-->
+                @if (ViewBag.Success != null)
+                {
+                    <div class="alert alert-success">
+                        <strong>Success : !</strong>@ViewBag.Success
+                    </div>
+                }
+
+                <div class="table-responsive m-b-40" style=" position:relative;">
+                    <table class="table table-borderless table-data3 table-lsp">
+
+                        <thead>
+                            <tr>
+                                <th width="10%">ID</th>
+                                <th>Tên Loại Sản Phẩm</th>
+                                <th>Thuộc Loại Sản Phẩm</th>
+                                <th>Status</th>
+                                <th width="5%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                            @foreach (var item in Model)
+                            {
+                                <tr id="row_@item.ID_LOAI_SP">
+                                    <td> @Html.DisplayFor(modelItem => item.ID_LOAI_SP)</td>
+                                    <td> @Html.DisplayFor(modelItem => item.TEN_LOAI_SP)</td>
+                                    <td> @(Model.SingleOrDefault(c=>c.ID_LOAI_SP == item.ID_CHA) != null ? Model.SingleOrDefault(c => c.ID_LOAI_SP == item.ID_CHA).TEN_LOAI_SP : "")</td>
+                                    <td class="process">
+
+                                        <span data-id="@item.ID_LOAI_SP" class="badge badge-pill btn-active-lsp @((item.TRANG_THAI == true)?"badge bg-success":"badge bg-danger")">
+                                            <i class="fa  @((item.TRANG_THAI == true)?"fa-eye":"fa-eye-slash")">@((item.TRANG_THAI == true)? "  Active" : "  Die")</i>
+                                        </span>
+
+
+                                    </td>
+                                    <td>
+                                        <div class="table-data-feature">
+
+                                            <a href="@Url.Action("Edit", "LoaiSanPham", new { id = item.ID_LOAI_SP })" class="btn item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit">
+                                                <i class="zmdi zmdi-edit"></i>
+                                            </a>
+
+                                            <a class="btn item btn-delete-lsp" data-toggle="tooltip" data-id="@item.ID_LOAI_SP" data-placement="top" title="" data-original-title="Delete">
+                                                <i class="zmdi zmdi-delete"></i>
+                                            </a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" class="align-items-center">
+                                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, search = @ViewBag.Search }), new PagedListRenderOptions
+                               {
+                                   DisplayLinkToIndividualPages = true,
+                                   DisplayPageCountAndCurrentLocation = false,
+                                   MaximumPageNumbersToDisplay = 10,
+                                   LiElementClasses = new string[] { "page-item" }
+                               })
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- END DATA TABLE-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="copyright">
+                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

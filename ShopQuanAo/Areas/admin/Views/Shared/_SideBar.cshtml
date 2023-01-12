@@ -1,0 +1,103 @@
+﻿
+@{
+    Layout = null;
+
+   
+}
+
+<!-- MENU SIDEBAR-->
+<aside class="menu-sidebar d-none d-lg-block">
+    <div class="logo">
+        <a href="/admin">
+            <img src="~/Public/admin/images/icon/logo.png" alt="Cool Admin" />
+        </a>
+    </div>
+    <div class="menu-sidebar__content js-scrollbar1">
+        <nav class="navbar-sidebar">
+            <ul class="list-unstyled navbar__list">
+                <li class=" active">
+                    <a href="/admin">
+                        <i class="fas fa-table"></i>Trang Chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index", "LoaiSanPham")">
+                        <i class="fas fa-chart-bar"></i>Quản Lý Loại Sản Phẩm
+                    </a>
+                </li>
+
+                <li class="has-sub">
+                    <a class="js-arrow" href="#">
+                        <i class="fas fa-copy"></i>Quản Lý Sản Phẩm
+                    </a>
+                    <ul class="list-unstyled navbar__sub-list js-sub-list">
+                        <li>
+                            <a href="@Url.Action("Index", "SanPham")">Danh Sách Sản Phẩm</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Size")">Danh Sách Size</a>
+                        </li>
+
+                        <li>
+                            <a href="@Url.Action("Create", "SanPham")">Thêm Sản Phẩm</a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a class="js-arrow" href="#">
+                        <i class="fas fa-copy"></i>Thống Kê
+                    </a>
+                    <ul class="list-unstyled navbar__sub-list js-sub-list">
+                        <li>
+                            <a href="@Url.Action("Index", "ThongKe")">Doanh thu tháng</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("DoanhThuNhanVien", "ThongKe")">Doanh thu nhân viên</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a class="js-arrow" href="#">
+                        <i class="fas fa-copy"></i>Sản phẩm thống kê
+                    </a>
+                    <ul class="list-unstyled navbar__sub-list js-sub-list">
+                        <li>
+                            <a href="@Url.Action("Index", "SanPhamBan")">Sản phẩm bán chạy</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("SanPhamHetHang", "SanPhamBan")">Sản phẩm hết hàng</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("SanPhamKhongBanDuoc", "SanPhamBan")">Sản phẩm không bán được</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index", "Slides")">
+                        <i class="fas fa-calendar-alt"></i>Quản Lý Slide
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index", "TinTuc")">
+                        <i class="fas fa-map-marker-alt"></i>Quản Lý Tin Tức
+                    </a>
+                </li>
+
+                <li>
+                    <a href="@Url.Action("Index", "Users")">
+                        <i class="fas fa-map-marker-alt"></i>Quản Lý Tài Khoản
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index", "HoaDon")">
+                        <i class="fas fa-map-marker-alt"></i>Quản Lý Hóa Đơn
+                    </a>
+                </li>
+
+
+            </ul>
+        </nav>
+    </div>
+</aside>
+<!-- END MENU SIDEBAR-->

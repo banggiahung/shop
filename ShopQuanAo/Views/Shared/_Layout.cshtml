@@ -1,0 +1,61 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <title>AllStore - MultiConcept eCommerce Template</title>
+
+    <link href="https://fonts.googleapis.com/css?family=PT+Serif:400,400i,700,700ii%7CRoboto:300,300i,400,400i,500,500i,700,700i,900,900i&amp;subset=cyrillic" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/Public/frontEnd/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/Public/frontEnd/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Public/frontEnd/css/ion.rangeSlider.css">
+    <link rel="stylesheet" href="~/Public/frontEnd/css/ion.rangeSlider.skinFlat.css">
+    <link rel="stylesheet" href="~/Public/frontEnd/css/jquery.bxslider.css">
+    <link rel="stylesheet" href="~/Public/frontEnd/css/jquery.fancybox.css">
+    <link rel="stylesheet" href="~/Public/frontEnd/css/flexslider.css">
+    <link rel="stylesheet" href="~/Public/frontEnd/css/swiper.css">
+    <link rel="stylesheet" href="~/Public/frontEnd/css/swiper.css">
+    <link rel="stylesheet" href="~/Public/frontEnd/css/style.css">
+    <link rel="stylesheet" href="~/Public/frontEnd/css/media.css">
+    @RenderSection("cssHeader", required: false)
+</head>
+<body>
+    <!-- Header - start -->
+        @RenderPage("_Header.cshtml")
+    <!-- Header - end -->
+    <!-- Main Content - start -->
+    <main>
+        @RenderBody()
+    </main>
+    <!-- Main Content - end -->
+    <!-- Footer - start -->
+    @RenderPage("_Footer.cshtml")
+    <!-- Footer - end -->
+    <!-- jQuery plugins/scripts - start -->
+    <script src="~/Public/frontEnd/js/jquery-1.11.2.min.js"></script>
+    <script src="~/Public/frontEnd/js/jquery.bxslider.min.js"></script>
+    <script src="~/Public/frontEnd/js/fancybox/fancybox.js"></script>
+    <script src="~/Public/frontEnd/js/fancybox/helpers/jquery.fancybox-thumbs.js"></script>
+    <script src="~/Public/frontEnd/js/jquery.flexslider-min.js"></script>
+    <script src="~/Public/frontEnd/js/swiper.jquery.min.js"></script>
+    <script src="~/Public/frontEnd/js/jquery.waypoints.min.js"></script>
+    <script src="~/Public/frontEnd/js/progressbar.min.js"></script>
+    <script src="~/Public/frontEnd/js/ion.rangeSlider.min.js"></script>
+    <script src="~/Public/frontEnd/js/chosen.jquery.min.js"></script>
+    <script src="~/Public/frontEnd/js/jQuery.Brazzers-Carousel.js"></script>
+    <script src="~/Public/frontEnd/js/plugins.js"></script>
+    <script src="~/Public/frontEnd/js/main.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhAYvx0GmLyN5hlf6Uv_e9pPvUT3YpozE"></script>
+    <script src="~/Public/frontEnd/js/gmap.js"></script>
+    <!-- jQuery plugins/scripts - end -->
+    @RenderSection("jsFooter", required:false)
+
+
+</body>
+</html>

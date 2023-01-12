@@ -1,0 +1,297 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+}
+
+@model PagedList.IPagedList<Models.ADO.ModelsSanPham>
+
+@using PagedList.Mvc;
+
+@section jsFooter{
+    <script>
+        $(document).ready(function () {
+            $(".btn-view-details").off("click").on("click", function (e) {
+                e.preventDefault();
+                var id = $(this).data("id");
+
+                $("#Modal-" + id).modal();
+            });
+
+            $(document).on("click", ".btn-view-edit-sp", function (e) {
+                e.preventDefault();
+                var id = $(this).data("id");
+                location.href = "/admin/sanpham/edit/" + id;
+            });
+        });
+    </script>
+    <script>
+        $(".btn-view-delete-sp").off("click").on("click", function (e) {
+            e.preventDefault();
+            var btn = $(this);
+            var id = btn.data("id");
+            console.log(id);
+            Swal.fire({
+                title: 'Delete',
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/admin/SanPham/Delete/' + id,
+                        dataType: 'json',
+                        type: "get"
+                    }).done(function (data) {
+                        // If successful
+                        if (data.status == "success") {
+                            Swal.fire("", "", data.status);
+                            var row = $(".table-product").children("tbody").find("tr#row_" + id);
+                            row.remove();
+                        } else {
+                            Swal.fire("", "", data.status);
+                        }
+                    })
+                }
+            });
+        });
+    </script>
+}
+@section cssHeader{
+
+    <style>
+        ul.pagination {
+            justify-content: center;
+        }
+
+            ul.pagination li {
+                display: inline;
+                background: #e9ecef;
+            }
+
+                ul.pagination li.active {
+                    background: teal;
+                    color: white;
+                }
+
+                ul.pagination li a {
+                    color: black;
+                    float: left;
+                    padding: 8px 16px;
+                    text-decoration: none;
+                    font-size: 16px;
+                    transition: background-color .3s;
+                }
+
+                    ul.pagination li a.active {
+                        background: teal;
+                        color: white;
+                    }
+
+                    ul.pagination li a:hover:not(.active) {
+                        background-color: #ddd;
+                    }
+    </style>
+
+}
+
+
+
+
+<div class="d-flex justify-content-between align-items-center mb-3" style="padding: 0 15px;">
+    <h3 class="">Danh Sách Loại Sản Phẩm</h3>
+
+    <p>
+        @Html.ActionLink("Thêm Mới", "Create", null, new { @class = "btn btn-success" })
+    </p>
+</div>
+
+<div class="section__content section__content--p30">
+
+
+
+    <div class="container-fluid">
+        <div class="row m-t-30">
+            <div class="col-md-12">
+                <!-- DATA TABLE-->
+
+
+                <div class="table-responsive m-b-40">
+                    <table class="table table-borderless table-data3 table-product">
+                        <thead>
+                            <tr>
+                                <th>Mã</th>
+                                <th width="10%">Loại SP</th>
+                                <th width="15%">Tên Sản Phẩm</th>
+                                <th class="th-image">Hình Ảnh</th>
+                                <th>SL</th>
+                                <th>Đv tính</th>
+                                <th>Giá nhập</th>
+                                <th>Giá bán</th>
+                                <th>Giảm</th>
+                                <th>Hot</th>
+                                <th>Status</th>
+                                <th width="5%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr id="row_@item.MA_SP.Trim()">
+                                    <td>@item.MA_SP</td>
+                                    <td>@Html.DisplayFor(modelItem => item.TenLoaiSP)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.TEN_SP)</td>
+                                    <td>
+                                        <div class="image-product">
+                                            <img src="@item.LINK_ANH_CHINH" alt="" class="w-100 h-100" />
+                                        </div>
+                                    </td>
+                                    <td>@item.SO_LUONG_TONG</td>
+                                    <td>@item.DON_VI_TINH</td>
+
+                                    <td>@String.Format("{0:0,0}", item.GIA_NHAP)<sup>đ</sup></td>
+                                    <td>@String.Format("{0:0,0}", item.GIA_BAN)<sup>đ</sup></td>
+                                    <td>@item.GIAM_GIA (%)</td>
+                                    <td class="process">
+
+                                        <span class="badge badge-pill @((item.NOI_BAT == true)?"badge bg-success":"")">
+                                            @((item.NOI_BAT == true)? "  Hot" : "")
+                                        </span>
+
+
+                                    </td>
+                                    <td class="process">
+
+                                        <span data-id="@item.MA_SP" class="badge badge-pill btn-active-product @((item.TRANG_THAI == true)?"badge bg-success":"badge bg-danger")">
+                                            <i class="fa  @((item.TRANG_THAI == true)?"fa-eye":"fa-eye-slash")">@((item.TRANG_THAI == true)? "  Active" : "  Die")</i>
+                                        </span>
+
+
+                                    </td>
+
+                                    <td>
+                                        <div class="table-data-feature table-data-product">
+                                            <button class="item btn-view-details" data-id="@item.MA_SP.Trim()" data-toggle="tooltip" data-placement="top" title="" data-original-title="Chi Tiết">
+                                                <i class="zmdi zmdi-more"></i>
+                                            </button>
+                                            <button class="item btn-view-edit-sp" data-toggle="tooltip" data-id="@item.MA_SP.Trim()" data-placement="top" title="" data-original-title="Edit">
+                                                <i class="zmdi zmdi-edit"></i>
+                                            </button>
+                                            <button class="item btn-view-delete-sp" data-toggle="tooltip" data-id="@item.MA_SP.Trim()" data-placement="top" title="" data-original-title="Delete">
+                                                <i class="zmdi zmdi-delete"></i>
+                                            </button>
+                                        </div>
+                                        <!-- The Modal -->
+                                        <div class="modal fade" id="Modal-@item.MA_SP.Trim()">
+                                            <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable modal-lg">
+                                                <div class="modal-content">
+
+                                                    <!-- Modal Header -->
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">@item.TEN_SP</h4>
+                                                        <button type="button" class="close" data-dismiss="modal">&times</button>
+                                                    </div>
+
+                                                    <!-- Modal body -->
+                                                    <div class="modal-body">
+                                                        <table class="table table-borderless">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-center">ID</th>
+                                                                    <th class="text-center" width="20%">Màu</th>
+                                                                    <th class="text-center">Images</th>
+                                                                    <th class="text-center" width="20%">Size</th>
+                                                                    <th class="text-center">Quantity</th>
+                                                                    <th class="text-center" width="10%">Status</th>
+                                                                    
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                                @if (item.listSanPhamDetails.Count > 0)
+                                                                {
+                                                                    foreach (var value in item.listSanPhamDetails)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@value.ID</td>
+                                                                            <td>@value.TenColor</td>
+                                                                            <td>
+                                                                                <div class="image-product">
+                                                                                    <img src="@value.Image" alt="" class="w-100 h-100" />
+                                                                                </div>
+                                                                            </td>
+                                                                            <td>@value.TenSize</td>
+                                                                            <td>@value.SO_LUONG</td>
+                                                                            <td class="process">
+                                                                                @if (value.SO_LUONG > 0)
+                                                                                {
+
+
+                                                                                    <span class="badge badge-pill badge bg-success">
+                                                                                        Còn hàng
+                                                                                    </span>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <span class="badge badge-pill badge bg-danger">
+                                                                                        Hết hàng
+                                                                                    </span>
+                                                                                }
+                                                                            </td>
+
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                <td colspan="7">Không có dữ liệu </td>
+                                                            }
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            </td>
+            </tr>
+        }
+
+
+                            <tr>
+                                <td colspan="12" class="align-items-center">
+                                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, search = @ViewBag.Search }), new PagedListRenderOptions
+                               {
+                                   DisplayLinkToIndividualPages = true,
+                                   DisplayPageCountAndCurrentLocation = false,
+                                   MaximumPageNumbersToDisplay = 10,
+                                   LiElementClasses = new string[] { "page-item" }
+                               })
+                                </td>
+                            </tr>
+
+                            </tbody>
+
+                            </table>
+                        </div>
+                        <!-- END DATA TABLE-->
+                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="copyright">
+                                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+

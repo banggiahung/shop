@@ -1,0 +1,21 @@
+﻿@model IEnumerable<Models.EntityFramework.LOAI_SAN_PHAM>
+
+@if ((int)ViewBag.CountChildrenDanhMuc > 0)
+{
+    <ul>
+        @foreach (var item in Model)
+        {
+            if (item.IS_REMOVE == true || item.TRANG_THAI == false)
+            {
+                continue;
+            }
+            <li class="categ-2">
+                <a href="@Url.Action("DanhMuc" , new { id = item.SLUG })">
+                    <span class="categ-1-label">@item.TEN_LOAI_SP</span>
+                    <span class="section-sb-toggle"><span class="section-sb-ico"></span></span>
+                </a>
+                @Html.Action("LoadMenuLeftChildrenDanhMuc", "Home", new { parentID = (int)item.ID_LOAI_SP })
+            </li>
+        }
+    </ul>
+}

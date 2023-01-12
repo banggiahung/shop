@@ -1,0 +1,61 @@
+﻿@model Models.EntityFramework.BAI_VIET
+
+@{
+    ViewBag.Title = "ChitietBaiViet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section cssHeader{
+    <style>
+        iframe.fb_iframe_widget_lift {
+            width: 100% !important;
+        }
+    </style>
+    }
+<section class="container">
+
+
+    <ul class="b-crumbs">
+        <li>
+            <a href="/">
+                Home
+            </a>
+        </li>
+        <li>
+            <a href="@Url.RouteUrl("RouteClient" , new { action = "BaiViet"})">
+                Tin Tức
+            </a>
+        </li>
+
+        <li>
+            <span>@Model.TIEU_DE</span>
+        </li>
+    </ul>
+    <h1 class="main-ttl"><span>@Model.TIEU_DE</span></h1>
+    <!-- Blog Post - start -->
+    <div class="post-wrap stylization">
+        @Html.Raw(Model.NOI_DUNG)
+    </div>
+    <!-- Blog Post - end -->
+    <!-- Related Products - start -->
+    <div class="prod-related">
+        <h2><span>Sản Phẩm Nổi Bật</span></h2>
+        <div class="prod-related-car" id="prod-related-car">
+            <ul class="slides">
+                @Html.Action("LoadProductNoiBat", "Home")
+            </ul>
+        </div>
+    </div>
+    <!-- Related Products - end -->
+    <!-- Comments - start -->
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v11.0&appId=1393238477712926&autoLogAppEvents=1" nonce="sDxx69Fa"></script>
+    <div class="fb-comments" data-href=" @HttpContext.Current.Request.Url.OriginalString.ToString()" data-width="100%" data-numposts="5"></div>
+
+    <!-- Comments - end -->
+    <!-- Comment Form - start -->
+    
+    <!-- Comment Form - end -->
+
+</section>
+
+

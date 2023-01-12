@@ -1,0 +1,147 @@
+﻿@model PagedList.IPagedList<Models.EntityFramework.SAN_PHAM>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "DanhMuc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section jsFooter{
+
+}
+
+<section class="container">
+    <ul class="b-crumbs">
+        <li>
+            <a href="index.html">
+                Home
+            </a>
+        </li>
+
+        <li>
+            <span>@ViewBag.Danhmuc.TEN_LOAI_SP</span>
+        </li>
+    </ul>
+    <h1 class="main-ttl"><span>Women</span></h1>
+    <!-- Catalog Sidebar - start -->
+    <div class="section-sb">
+
+        <!-- Catalog Categories - start -->
+        @Html.Action("LoadMenuLeftDanhMuc", "Home", new { parent_id = (int)@ViewBag.Danhmuc.ID_CHA, id = (int)@ViewBag.Danhmuc.ID_LOAI_SP })
+        <!-- Catalog Categories - end -->
+        <!-- Filter - start -->
+        <div class="section-filter">
+            <button id="section-filter-toggle" class="section-filter-toggle" data-close="Hide Filter" data-open="Show Filter">
+                <span>Show Filter</span> <i class="fa fa-angle-down"></i>
+            </button>
+            <div class="section-filter-cont">
+             
+                <form  method="get">
+                    <div class="section-filter-item opened">
+                        <p class="section-filter-ttl">Tìm Kiếm Theo Giá <i class="fa fa-angle-down"></i></p>
+                        <div class="section-filter-fields">
+                            <p class="section-filter-field">
+                                <input id="section-filter-checkbox2-0" name="price" value="all" type="radio" checked>
+                                <label class="section-filter-checkbox" for="section-filter-checkbox2-0">Tất Cả</label>
+                            </p>
+                            <p class="section-filter-field">
+                                <input id="section-filter-checkbox2-1" name="price" value="0-2000000" type="radio">
+                                <label class="section-filter-checkbox" for="section-filter-checkbox2-1">0 => 2.000.000 Đ</label>
+                            </p>
+                            <p class="section-filter-field">
+                                <input id="section-filter-checkbox2-2" name="price" value="2000000-5000000" type="radio">
+                                <label class="section-filter-checkbox" for="section-filter-checkbox2-2">2.000.000 Đ => 5.000.000 Đ</label>
+                            </p>
+                            <p class="section-filter-field">
+                                <input id="section-filter-checkbox2-3" name="price" value="5000000-10000000" type="radio">
+                                <label class="section-filter-checkbox" for="section-filter-checkbox2-3">5.000.000 Đ => 10.000.000 Đ</label>
+                            </p>
+                            <p class="section-filter-field">
+                                <input id="section-filter-checkbox2-4" name="price" value="10000000-25000000" type="radio">
+                                <label class="section-filter-checkbox" for="section-filter-checkbox2-4">10.000.000 Đ => 25.000.000 Đ</label>
+                            </p>
+                            <p class="section-filter-field">
+                                <input id="section-filter-checkbox2-5" name="price" value="25000000-5000000" type="radio">
+                                <label class="section-filter-checkbox" for="section-filter-checkbox2-5">25.000.000 Đ => 50.000.000 Đ</label>
+                            </p>
+                            <p class="section-filter-field">
+                                <input id="section-filter-checkbox2-6" name="price" value="5000000" type="radio">
+                                <label class="section-filter-checkbox" for="section-filter-checkbox2-6">Trên 50.000.000 Đ</label>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="section-filter-buttons">
+                        <input class="btn btn-themes" id="set_filter" type="submit" value="Tìm Kiếm" >
+                        <input class="btn btn-link" id="del_filter" name="del_filter" value="Reset" type="reset">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Filter - end -->
+
+    </div>
+    <!-- Catalog Sidebar - end -->
+    <!-- Catalog Items | Gallery V1 - start -->
+    <div class="section-cont">
+
+        <!-- Catalog Topbar - start -->
+        <div class="section-top">
+
+            <!-- View Mode -->
+            <ul class="section-mode">
+                <li class="section-mode-gallery active"><a title="View mode: Gallery" href="catalog-gallery.html"></a></li>
+            </ul>
+
+            <!-- Sorting -->
+            
+            <!-- Count per page -->
+            
+
+        </div>
+        <!-- Catalog Topbar - end -->
+        <div class="prod-items section-items">
+
+            @foreach (var item in Model)
+            {
+                <div class="prod-i">
+                    <div class="prod-i-top">
+                        <a href="@Url.Action("SanPham" , new { id = item.SLUG})" class="prod-i-img"><!-- NO SPACE --><img src="@item.LINK_ANH_CHINH" alt="Adipisci aperiam commodi"><!-- NO SPACE --></a> 
+                    </div>
+                    <h3>
+                        <a href="@Url.Action("SanPham" , new { id = item.SLUG})">@item.TEN_SP</a>
+                    </h3>
+                    <p class="prod-i-price">
+                        <b>@String.Format("{0:0,0}", item.GIA_BAN)<sup>đ</sup></b>
+                    </p>
+
+                </div>
+            }
+
+
+
+        </div>
+
+        <!-- Pagination - start -->
+        @Html.PagedListPager(Model , page => Url.Action("Index", new { page, price = @ViewBag.Search }), new PagedListRenderOptions
+           {
+               DisplayLinkToIndividualPages = true,
+               DisplayPageCountAndCurrentLocation = false,
+               MaximumPageNumbersToDisplay = 10,
+               LiElementClasses = new string[] { "page-item" }
+           })
+      @*  <ul class="pagi">
+            <li class="active"><span>1</span></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li class="pagi-next"><a href="#"><i class="fa fa-angle-double-right"></i></a></li>
+        </ul>*@
+        <!-- Pagination - end -->
+    </div>
+    <!-- Catalog Items | Gallery V1 - end -->
+    <!-- Quick View Product - start -->
+    
+    <!-- Quick View Product - end -->
+</section>
+
+
+

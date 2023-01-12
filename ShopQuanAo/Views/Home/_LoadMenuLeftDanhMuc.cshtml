@@ -1,0 +1,29 @@
+﻿@model List<Models.EntityFramework.LOAI_SAN_PHAM>
+
+<div class="section-sb-current">
+    <h3><a href="@Url.Action("DanhMuc" , new { id = ViewBag.MenuParent.SLUG })">@ViewBag.MenuParent.TEN_LOAI_SP <span id="section-sb-toggle" class="section-sb-toggle"><span class="section-sb-ico"></span></span></a></h3>
+    <ul class="section-sb-list" id="section-sb-list">
+        @foreach (var item in Model.Where(x=>x.ID_CHA == (int)ViewBag.MenuParent.ID_LOAI_SP))
+        {
+            if (item.IS_REMOVE == true || item.TRANG_THAI==false)
+            {
+                continue;
+            }
+            var childen = Model.Where(a => a.ID_CHA == item.ID_LOAI_SP);
+            <li class="categ-1 has_child parent_menu">
+                <a href="@Url.Action("DanhMuc" , new { id = item.SLUG })">
+                    <span class="categ-1-label">@item.TEN_LOAI_SP</span>
+
+                    @if (childen.Count() > 0)
+                    {
+                        <span class="section-sb-toggle"><span class="section-sb-ico"></span></span>
+                    }
+
+                </a>
+                @Html.Action("LoadMenuLeftChildrenDanhMuc", "Home", new { parentID = (int)item.ID_LOAI_SP })
+            </li>
+            }
+
+        </ul>
+</div>
+

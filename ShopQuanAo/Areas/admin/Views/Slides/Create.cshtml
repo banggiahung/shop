@@ -1,0 +1,127 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+}
+@model Models.EntityFramework.SLIDE
+@section jsFooter{
+    
+    <script src="~/Public/admin/js/slide.js"></script>
+}
+
+<div class="section__content section__content--p30 mt-3">
+    <div class="container-fluid">
+        <div class="row ml-0 mr-0">
+            @using (Html.BeginForm("Create", "Slides", FormMethod.Post, new { @class = "w-100", @enctype = "multipart/form-data" }))
+            {
+
+                @Html.AntiForgeryToken()
+
+                <div class="card w-100">
+                    <div class="card-header d-flex pl-3 pr-3 justify-content-between align-items-center">
+                        <h3><strong>Thêm </strong> Slides</h3>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <p>
+                            @Html.ActionLink("Danh Sách", "Index", null, new { @class = "btn btn-success" })
+
+                        </p>
+                    </div>
+                    <div class="card-body card-block">
+                        @if (ViewBag.Err != null)
+                        {
+                            <div class="alert alert-danger">
+                                <strong>Error : !</strong> @ViewBag.Err
+                            </div>
+                        }
+                        <div class="row form-group mb-3">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Tiêu Đề :</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                @Html.EditorFor(model => model.TIEU_DE, new { htmlAttributes = new { @class = "form-control", @onchange = "onchange_ten(this)" } })
+
+                                @Html.ValidationMessageFor(model => model.TIEU_DE, "", new { @class = "help-block form-text text-danger" })
+
+
+                            </div>
+                        </div>
+                        <div class="row form-group mb-3">
+                            <div class="col col-md-3">
+                                <label for="email-input" class=" form-control-label">Link :</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                @Html.EditorFor(model => model.LINK, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.LINK, "", new { @class = "help-block form-text text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row form-group mb-3">
+                            <div class="col col-md-3">
+                                <label for="select" class=" form-control-label">STT</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                @Html.EditorFor(model => model.STT, new { htmlAttributes = new { @type = "number", @value = "0", @min = "0", @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.LINK, "", new { @class = "help-block form-text text-danger" })
+
+                            </div>
+                        </div>
+
+                        <div class="row form-group mb-3">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Ảnh Chính</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <div class="form-group ">
+                                    <input type="file" name="images" id="images" class="file-upload-default-image" style="position: absolute ; visibility: hidden;">
+                                    <div class="input-group col-xs-12">
+                                        <input type="text" class="form-control file-upload-info" disabled="" placeholder="Upload Image">
+
+                                        <span class="input-group-append">
+                                            <button class="file-upload-image btn btn-primary" type="button">Upload</button>
+                                        </span>
+                                    </div>
+                                    <small class="validate validate-images text-danger form-text "></small>
+                                    <div class="hien-thi-image-chinh" style="min-width: 400px; max-width:500px ; margin: 1rem auto;">
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-12">
+
+                            </div>
+                        </div>
+
+                        <div class="row form-group mb-3">
+                            <div class="col col-md-3">
+                                <label for="email-input" class=" form-control-label">Hiển thị :</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="checkbox" name="is_active" value="true"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            <i class="fa fa-dot-circle-o"></i> Submit
+                        </button>
+                        <button type="reset" class="btn btn-danger btn-sm">
+                            <i class="fa fa-ban"></i> Reset
+                        </button>
+                    </div>
+                </div>
+            }
+
+
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="copyright">
+                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Models.EntityFramework.SAN_PHAM>
+
+
+@for (var i = 0; i < Math.Ceiling((decimal)Model.Count()/4 ); i++)
+{
+    <li class="prod-rel-wrap">
+        @foreach (var item in Model.Select(a=>a).Skip(i*4).Take(4))
+        {
+            <div class="prod-rel">
+                <a href="@Url.Action("SanPham" , new { id = item.SLUG})" class="prod-rel-img">
+                    <img src="@item.LINK_ANH_CHINH" alt="@item.TEN_SP">
+                </a>
+                <div class="prod-rel-cont">
+                    <h3><a href="@Url.Action("SanPham" , new { id = item.SLUG})">@item.TEN_SP</a></h3>
+                    <p class="prod-rel-price">
+                        <span>@String.Format("{0:0,0}", item.GIA_BAN-(item.GIA_BAN*item.GIAM_GIA)/100)<sup>VNĐ</sup></span>
+                    </p>
+                    <div class="prod-rel-actions">
+                       @* <a title="Wishlist" href="#" class="prod-rel-favorites"><i class="fa fa-heart"></i></a>
+                        <a title="Compare" href="#" class="prod-rel-compare"><i class="fa fa-bar-chart"></i></a>
+                       *@ <p class="prod-i-addwrap">
+                            <a title="Add to cart" href="#" class="prod-i-add"><i class="fa fa-shopping-cart"></i></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+    </li>
+}

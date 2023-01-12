@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Models.EntityFramework.LOAI_SAN_PHAM>
+
+<div class="fr-pop-wrap">
+
+    <h3 class="component-ttl"><span>Sản phẩm Phổ biến</span></h3>
+
+    <ul class="fr-pop-tabs sections-show">
+        <li><a data-frpoptab-num="0" data-frpoptab="#frpoptab-tab-0" href="#" class="active">All Categories</a></li>
+        @foreach (var item in Model.Where(c=>c.ID_CHA == 0).ToList())
+        {
+            <li><a data-frpoptab-num="@item.ID_LOAI_SP" data-frpoptab="#frpoptab-tab-@item.ID_LOAI_SP" href="#">@item.TEN_LOAI_SP</a></li>
+        }
+       
+    </ul>
+
+    <div class="fr-pop-tab-cont">
+
+        <p data-frpoptab-num="0" class="fr-pop-tab-mob" data-frpoptab="#frpoptab-tab-0">Women</p>
+        <div class="flexslider prod-items fr-pop-tab" id="frpoptab-tab-0">
+            <ul class="slides">
+                @Html.Action("LoadContentPopularProduct", "Home", new { id = 0 })
+            </ul>
+        </div>
+        
+            @foreach (var cate in Model.Where(c => c.ID_CHA == 0).ToList())
+            {
+                <p data-frpoptab-num="@cate.ID_LOAI_SP" class="fr-pop-tab-mob" data-frpoptab="#frpoptab-tab-@cate.ID_LOAI_SP">@cate.TEN_LOAI_SP</p>
+                <div class="flexslider prod-items fr-pop-tab" id="frpoptab-tab-@cate.ID_LOAI_SP">
+
+                    <ul class="slides">
+                        @Html.Action("LoadContentPopularProduct", "Home", new { id = cate.ID_LOAI_SP })
+                    </ul>
+                </div>
+            }
+        </div><!-- .fr-pop-tab-cont -->
+
+
+    </div>

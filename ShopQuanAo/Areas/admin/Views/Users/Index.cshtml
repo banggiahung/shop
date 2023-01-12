@@ -1,0 +1,160 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+}
+@model PagedList.IPagedList<Models.EntityFramework.ACOUNT>
+
+@using PagedList.Mvc;
+
+
+@section jsFooter{
+    <script>
+       
+    </script>
+}
+@section cssHeader{
+
+    <style>
+        ul.pagination {
+            justify-content: center;
+        }
+
+            ul.pagination li {
+                display: inline;
+                background: #e9ecef;
+            }
+
+                ul.pagination li.active {
+                    background: teal;
+                    color: white;
+                }
+
+                ul.pagination li a {
+                    color: black;
+                    float: left;
+                    padding: 8px 16px;
+                    text-decoration: none;
+                    font-size: 16px;
+                    transition: background-color .3s;
+                }
+
+                    ul.pagination li a.active {
+                        background: teal;
+                        color: white;
+                    }
+
+                    ul.pagination li a:hover:not(.active) {
+                        background-color: #ddd;
+                    }
+    </style>
+
+}
+
+
+
+<div class="d-flex pl-3 pr-3 justify-content-between align-items-center mb-3">
+    <h3 class="">Danh Sách Tài Khoản Admin</h3>
+
+    <p>
+        @Html.ActionLink("Thêm Mới", "Create", null, new { @class = "btn btn-success" })
+    </p>
+</div>
+<div class="section__content section__content--p30">
+
+    <div class="container-fluid">
+        <div class="row m-t-3">
+            <div class="col-md-12">
+                <!-- DATA TABLE-->
+                @if (ViewBag.Success != null)
+                {
+                    <div class="alert alert-success">
+                        <strong>Success : !</strong>@ViewBag.Success
+                    </div>
+                }
+
+                <div class="table-responsive m-b-40" style=" position:relative;">
+                    <table class="table table-borderless table-data3 table-lsp">
+
+                        <thead>
+                            <tr>
+                                <th width="10%" class="text-center">ID</th>
+                                <th class="text-center">Họ Tên</th>
+                                <th class="text-center">Ảnh</th>
+                                <th class="text-center">Email</th>
+                                <th class="text-center">SDT</th>
+                                <th class="text-center">Địa Chỉ</th>
+                                <th class="text-center">Status</th>
+                                <th width="5%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                            @foreach (var item in Model)
+                            {
+                                <tr id="row_@item.ID">
+                                    <td align="center"> @Html.DisplayFor(modelItem => item.ID)</td>
+                                    <td align="center"> @Html.DisplayFor(modelItem => item.HO_TEN)</td>
+                                    <td align="center">
+                                        @if (item.LINK_ANH != null)
+                                        {
+                                            <img src="@item.LINK_ANH" style="max-width:100px; max-height:80px;" />
+                                        }
+                                    </td>
+                                    <td align="center"> @Html.DisplayFor(modelItem => item.EMAIL)</td>
+                                    <td align="center"> @Html.DisplayFor(modelItem => item.PHONE)</td>
+                                    <td align="center"> @Html.DisplayFor(modelItem => item.DIA_CHI)</td>
+                                    <td align="center" class="process">
+
+                                        <span data-id="@item.ID" class="badge badge-pill @((item.TRANG_THAI == true)?"badge bg-success":"badge bg-danger")">
+                                            <i class="fa  @((item.TRANG_THAI == true)?"fa-eye":"fa-eye-slash")">@((item.TRANG_THAI == true)? "  Active" : "  Die")</i>
+                                        </span>
+
+
+                                    </td>
+                                    <td align="center">
+                                        <div class="table-data-feature">
+
+                                            <a href="@Url.Action("Edit", "Users", new { id = item.ID })" class="btn item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit">
+                                                <i class="zmdi zmdi-edit"></i>
+                                            </a>
+
+                                            <a class="btn item btn-delete-lsp" data-toggle="tooltip" data-id="@item.ID" data-placement="top" title="" data-original-title="Delete">
+                                                <i class="zmdi zmdi-delete"></i>
+                                            </a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+
+
+
+                            <tr>
+                                <td colspan="8" class="align-items-center">
+                                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+                               {
+                                   DisplayLinkToIndividualPages = true,
+                                   DisplayPageCountAndCurrentLocation = false,
+                                   MaximumPageNumbersToDisplay = 10,
+                                   LiElementClasses = new string[] { "page-item" }
+                               })
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- END DATA TABLE-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="copyright">
+                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
